@@ -152,9 +152,40 @@ Semantičke greške se obično teže debaguju u ovakvim lakim primerima mogu da 
 
 \section{Ostali python debageri}
 
-\section{Debagovanje u IDE}
+\section{Debagovanje u okruzenju PyCharm}
+Da bi zapoceli debug sesiju prvo moramo postaviti \emph{prekide (eng. breakpoint)} koji ce signalizirati debageru  da treba da se zaustavi na odredjenom mestu u kodu i da nam da izvestaj stanja u tom trenutku. Breakpoint postavljamo tako sto klinemo na prazninu uz levu marginu.
+
+\includegraphics[scale = 0.4]{1}
+
+Znacemo da je Breakpoint uspesno postavljen pojavom crvenog kruzica. Prilikom pokretanja main funkcije naseg programa mozemo izabrati opciju Debug, ovo ce otvoriti \emph{Debug tool window} u kome mozemo pokrenuti nas python kod I gde cemo dobijati sve informacije o izvrsavanju. Informacije koje dobijamo mogu sadrzati poruke o greskama, ne uhvacene izuzeteke, vrednosti promenljivih (u svom zasebnom prozoru) I druge. PyCharm se automatski zaustavlja ukoliko naidje na izuzetak koji nije uhvacen inace se zaustavlja na lokaciji prvog breakpoint-a. Ukoliko program ima vise niti dobicemo posebne prozore za svaku od njih.
+\subsection{Detaljno debagovanje}
+Sta ako zelimo da posmatramo izvrsavanje naseg koda korak po korak? Da li ovo znaci da moramo postaviti breakpoint u svakoj liniji? Odgovor je ne, PyCharm debugger poseduje , u svom Debug tool window, takozvani \emph{Stepping toolbar}.
+
+\includegraphics[scale = 0.6]{2}
+
+Cesto koriscene opcije koje su nam na raspolaganju su:
+\begin{itemize}
+\item  Step Over
+\item  Step Into
+\item Step Into My Code
+\end{itemize}
+Step Over jednostavno prelazi na sledecu liniju koda (linija na kojoj se trenutno nalazimo bice osencena u editoru). Step Into opcija ce nas voditi kroz biblioteke I funkcije koje koristimo kada na njih naidjemo
+\begin{lstlisting}[language = Python, caption={Primer neki}]
+ x = random.nextInt();
+ y = f(x);
+\end{lstlisting} 
+ ovaj kod ce nas odvesti u biblioteku Random ako na ovoj liniji koristimo opciju Step Into tj u definiciju funkcije f, ovo cesto ne zelimo pa koristimo opciju Step Into My Code koja ce nas zadrzati u nasem kodu. 
+\subsection{Posmatranja (Watches)}
+PyCharm nam omogucava da posmatramo promenljive kroz izvrsavanje naseg programa . U tabu debagera \emph{Variables} se nalaze sve promenljive koje postoje I koje su vidljive u trenutnom stanju izvrsavanja I na trenutnoj lokaciji u kodu  kao I njihov tip I vrednost. Ako klinknemo na \emph {plus} u gornjem levom uglu dobijamo opciju da dodamo bilo koju promenljivu I ona ce biti pracena uvek bez obzira na to gde se ona nalazi , da li je trenutno vidljiva I da li je uopste definisana.
+\subsection{Inline Debugger}
+Jedna od opcija koju nam pruza PyCharm jeste da klikom na Break point odmah dobijamo informacije o nasim promenljivima I objektima odmah u editoru u vidu komentara. Ova opcija je podrazumevana I mozem se promeniti u Debug Tool window-u.
 
 
+\includegraphics[scale = 0.4]{3}
+\subsection{Evaluacija izraza}
+Poslednja opcija koja se nalazi na Stepping Toolbar-u je opcija za evaluaciju izraza. Ovo opcija nam omogucava da izracunamo vrednost neke promenljive  koja nam je trenutno u opsegu ili nekog izraza. Pitanje koje se postavlja je zasto bi ovo koristili jer isto mozemo dobiti koriscenjem Posmatranja. Ovo je tacno ali evaluacijom mozemo uraditi nesto sto Posmatranje ne moze a to je da postavimo vrednost nekoj promenljivoj. Ovo je jako korisno jer mozemo testirati nas kod za neke kriticne vrednosti tako sto cemo na `vestack` nacin da dodeljujemo vrednosti promenljivima koje ce nas dovesti do tog kriticnog stanja.
+
+\includegraphics[scale = 0.4]{4}
 \section{Zaključak}
 \label{sec:zakljucak}
 
