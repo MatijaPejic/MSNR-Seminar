@@ -143,8 +143,42 @@ U prethodnom primeru program računa sumu prviih n brojeva. Nekih od semantički
 Semantičke greške se obično teže debaguju u ovakvim lakim primerima mogu da se uoče, ali u nekim kompleksijim primerima potrebne su neke od naprednihih tehnika. U narednim delovima ćemo se posvetiti tehnikama debagovanja, tehnike i upotrebe debagera i upotreba IDE za debagovanje.
 
 \section{Debagovanje naučnom metodom}
+U prethodnom delu, videli smo neke osnovne tehnike debagovanja. Ali šta ako nismo i dalje sigurni u čemu je problem? Šta ako naše nagađanje nije dovoljno dobro i ne znamo lokaciju problema, ni iz koda greške ni iz semantike koda? Tada se treba okrenuti nekom formalnom načinu pronalaženja problema kao što je naučni metod. On traženje greške bazira na prikupljanju dokaza i predstavlja frejmvork u koji se uklapaju ostale metode i dobru bazu za kasnije testiranje i održavanje koda.
+	 Koraci su sledeći\cite{proPyDeb}:
+	 \begin{enumerate}
+	     \item Posmatraj: Počinjemo posmatranjem ponašanja programa 
+	     \item Napravi hipotezu: Posmatranjem dobijamo ideju, tj postavljamo hipotezu koja objašnjava ponašanje programa
+	     \item Predvidi: Na osnovu hipoteze, pravimo predikciju šta bi drugo naš program trebao da radi, pod uslovom da je hipoteza tačna
+	     \item Testiraj: Ispitamo tu predikciju puštanjem programa u odgovarajućim eksperimentalnim uslovima i posmatramo rezultat izvršavanja
+	     \item Zaključi: Zavisno od rezulatata ćemo prihvatiti ili odbaciti našu hipotezu,. Ako smo odbacili hipotezu, vraćamo se na korak 2, gde postavljamo novu hipotezu ili refiniramo postojeću i sledimo dalje korake
+	 \end{enumerate}
 
-\section{Debagovanje print metod}
+	Moć ovog metoda sastoji se u tome što on instinktivno nagađanje pretvara u formalnu i sitematičnu dedukciju. Njegovim pomnim praćenjem, dolazimo do pronalaženja i jako složenih i komplikovanih grešaka. Osim toga, dolazi se do čistijih rešenja i koda koji je lakši za održavanje.
+	Zašto onda ne koristimo uvek ovu metodu za debagovanje?  U praksi će se dešavati često da pravimo sitne, lako uočljive bagove, koji se nalaze u par minuta ako im se posvetimo. Korišćenje naučnog metoda pre nego što bar pokušamo neformalno da nađemo bag, ovde će nam doneti više štete nego koristi i oduzeti dragoceno vreme. Neko nepisano pravilo je da ga primenimo ako ne nađemo rešenje u 10-15 minuta. \\
+	Da bi efikasno primenili ovaj način debagovanja, potrebno je da dobro vladamo tehnikama reprodukcije grešaka, automatizacije (pogotovo ako imamo složenije sisteme koji uključuju komunikaciju preko mreže ili nekakvu nasumičnost) i izolacije grešaka(strip-down strategijom ili strategijom binarne pretrage) \cite{proPyDeb}.
+	Strip-Down strategija odlikuje se iterativnim uprošćavanjem koda komentarisanjem ili uklanjanjem linija, dok ne dođemo do minimalnog broj linija potrebnog za  reprodukcuju greške. Strategija binarne pretrage sastoji se iz modulacije koda na dva dela približno jednake veličine i proveravanja u koji deo se greška dalje propagira tokom izvršavanja. U tom delu se rekurzivno dalje nastavlja pretraga. Dobijene test skriptove je zgodno čuvati i za kasnije, jer oni mogu da se razviju u test funkcije o kojima ćemo pričati kasnije.
+
+\section{Debagovanje print naredbama}
+Print je mnogim programerima metoda broj jedan za debagovanje. Razlog za to leži u lakoći korišćenja, relativno čestom pronalaženju greške i prostom prikazivanju nedostatka informacija o podacima i izvršavanju (rother). Iako jednostavan i nedvosmislen, to ne znači da je bez greške. Print se može previše koristiti i tako poremetiti ceo kod i njegovu čitljivost i eleganciju, pogotovo ako je veći. Da bi  se to izbeglo, treba ga disciplinovano koristiti sa već pomenutom binarnom pretragom i naučnom metodom.
+Hipoteze koje tvrde da neki deo koda nije izvršen lako možemo odbaciti ako se izvrši print naredba nakon tog koda. Takođe, štampanjem vrednosti neke promenljive često možemo prihvatiti ili odbaciti hipotezu vezanu za njenu vrednost u određenom trenutku. 
+Ono što je takođe loše je to što mi dodajemo stvari koje naš program i ne treba da radi; u nekom smislu činimo kod više pogrešnim da bi ga popravili. \emph{Zamislite pucanje i pravljenje rupa u zidu da bi proverili da li ima vatre u zgradi}\cite{excDocPyt}. 
+Ako imamo složene strukture podataka u programu kao što su liste, rečnici, skupovi, torke, ili bilo koji tipovi podataka sačinjeni od prethodnih, možemo koristiti \textbf{pretty-printing} za njihov lepši ispis. Naime, u Pajtonovoj standardnoj biblioteci postoji moduo zvani \emph{pprint}\cite{ppDocPyt}. Možemo ga koristiti da isforsiramo ispis u jednoj liniji, kao i da prilagodimo ispis našoj strukturi i podacima, zahvaljujući mnogobrojnim opcijama koje sadrži. Ovaj moduo možda nije direktno sredstvo debagovanja, ali olakšavajući čitljivost, umnogome ga olakšava. 
+\subsection{Uključivanje i isključivanje print naredbi}
+Tokom debagovanja, dodali smo dosta linija u cilju dijagnoze koje kasnije treba obrisati radi čistoće koda. Medjutim, ove linije mogu biti korisne kada želimo da ispitamo stanje programa na ovom mestu posle dodavanja novog koda, i zato njihovo brisanje predstavlja lošu ideju. Osim neefikasnosti ponovnog manuelnog dodavanja, problem je i što stalno pisanje i brisanje nosi rizik novih grešaka u kodu. Zato mora da postoji neki način da uključimo i isključimo print naredbe u kodu. Najprimitivnije rešenje je definisanje neke indikatorske promeljive koja se postavlja na true kad se debaguje i na false u suprotnom. Ovakav pristup dovodi do stavljanja kondicionih naredbi uz svaki print, čime se program usložnjava, usporava i postaje teško čitljiv. 
+Alternativa je zameniti print naredbu sa  \textbf{debug\_print} naredbom koja se brine o proveravanju stanja neke DEBUG promenljive i, shodno tome, prosleđuje argumente regularnoj print funkciji. 
+\begin{lstlisting}[language = python, caption = {Definisanje nove print funkcije}]
+def debug_print(*args):
+    if DEBUG:
+        print(*args)
+\end{lstlisting}
+\begin{lstlisting}[language = python, caption = {Deklarisanje DEBUG promenljive}]
+import sys
+
+DEBUG = "-d" in sys.argv
+\end{lstlisting}
+Ovakvom deklaracijom izbegavamo ručnu promenu vrednosti ove promenljive i pokrećemo program u modu za debagovanje samo dodavanjem opcije -d argumentima komandne linije. \\
+\quad Ovaj koncept se može proširiti pajton bibliotekama logging \cite{logDocPyt} i argparse koje nam daju veću kontrolu nad štampanjem, uz mnogo novih opcija. Bibliotekom logging formira se Logger objekat koji kontroliše ispis postavljanjem nivoa štampanja na jednu od numeričkih vrednosti CRITICAL, ERROR, WARNING,  INFO, DEBUG, NOTSET. Ako postavimo na DEBUG, štampaće se sve. Umesto postavljanja nivoa, mogu se samo pozvati istoimeni metodi nad Logger objektom.
+Ono što on stvara su objekti LogRecord klase. Svaki ovaj log zapis sadrži informacije o događaju koji se loguje, i sa njim kasnije rade druge klase iz ove bilioteke. Te klase su hendleri koji šalju log zapise na odgovarajuću destinaciju i filteri koji na sofisticiraniji način od levela određuju koje log zapise staviti na izlaz. Tu su i formateri koji određuju formu log zapisa na konačnom izlazu, mapirajući LogRecord objekat u nešto čitljivo čoveku ili nekom eksternom sistemu, najčešće string. 
 
 \section{Tehnike debagera}
 
