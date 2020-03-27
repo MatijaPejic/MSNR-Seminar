@@ -103,7 +103,7 @@ def student(ime):
 student('Pera')
 \end{lstlisting}
 Program ne uspeva i izbacuje narednu grešku.
-\begin{lstlisting}[language = bash, caption = {ispis}]
+\begin{lstlisting}[language = bash, caption={ispis}]
   File "primer.py", line 5
     'Laza': '252/2015'
           ^
@@ -183,6 +183,146 @@ Ono što on stvara su objekti LogRecord klase. Svaki ovaj log zapis sadrži info
 \section{Tehnike debagera}
 
 \section{PDB debager}
+Pdb je deo Python standardne biblioteke i predstavlja interaktivni program za otklanjanje grešaka(eng. debugger)\cite{pdbDocPyt}. Ukoliko dođe do greške u kodu predstavlja neophodan alat i poseduje velike mogućnosti poput praćenja izvršavanja programa korak po korak što predstavlja pomoć pri rešavanju bagova na koje nailazimo ili pak za bolje razumevanje tuđeg koda. S obzirom da je u praksi u velikoj upotrebi cilj je da Vas kroz ovaj tekst upoznamo sa svim beneficijama upotrebe debagera i da klasičnu printf metodu zaboravimo. Koristeći pip većinu verzija instaliramo sa:
+\\pip install ipdb
+\\ipdb-naprednija verzija standardnog Python pdb debagera.
+\subsection{Pokretanje debagera}
+Debagovanje našeg programa možemo pokrenuti:
+\begin{itemize}
+\item iz komandne linije
+\item iz samog programa
+\end{itemize}
+Što se tiče komandne linije ukoliko program imenujemo kao prvi.py pokrećemo ga pod kontrolom debagera sa:
+\\python -m pdb prvi.py arg1 arg2
+\\pdb.py se zapravo poziva kao skript za debagovanje drugih skriptova. U ovom slučaju izvršavanje programa u debageru kreće od prve linije.
+\\Pokretanje debagera iz samog programa možemo otpočeti na početku programa, iz proizvoljne linije ili nakon ispaljivanja izuzetka. To činimo tako što umetnemo određeni deo koda u program na mesto odakle želimo da započnemo proces debagovanja.
+\begin{lstlisting}[language = python, caption = {}]
+import pdb; pdb.set_trace()
+\end{lstlisting}
+pdb.set\_trace() postavlja debager za pozivajući stek okvir. Debager je proširiv i zapravo je definisan kao klasa Pdb. Kada se izvrši linija iznad program se zaustavlja i čeka sledeću naredbu. Prikazuje se pdb prompt. To znaci da je postavljena pauza u interaktivnom debageru i da mozemo uneti komandu.
+Od verzije 3.7 možemo pokrenuti debager funkcijom breakpoints() koja importuje pdb i poziva pdb.set\_trace() \cite{pdbExamples}. Definisanjem promenljive BREAKPOINTS=0 onemogućavamo breakpoints() čime prekidamo debagovanje.
+\subsection{Debagovanje korak po korak}
+Ovu priču započinjemo primerom prvi.py.
+\begin{lstlisting}[language = python, caption = {prvi.py}]
+my_list = [1,9,13,3,12]
+new_list = list(map(lambda x: x*2,my_list))
+def sub(a,b):
+  print(a)
+  return a-b
+diff = sub(40,2)
+my_list_sum = sum(my_list)
+experiment = sum(new_list) / sub(diff,my_list_sum)
+\end{lstlisting}
+Kada pokrenemo skript koristeći Python debager komandom python -m pdb prvi.py vidimo u konzoli
+\begin{lstlisting}[language = bash, caption={ispis}]
+> prvi.py(1)<module>()
+-> my_list = [1,9,13,3,12]
+(Pdb)
+\end{lstlisting}
+CLI(eng comand line interface) nam govori:\\
+> započinje prvi red i govori u kojoj izvornoj datoteci se nalazimo, nakon toga u zagradama se nalazi broj linije u kodu na kojoj se nalazimo, a potom i ime funkcije. U slučaju da nismo upali u neku funkciju pisaće <module>()\\
+\textendash>  započinje drugu liniju i to je trenutna linija u kojoj je program pauziran. Ta linija još uvek nije izvršena. Debager nam prikazuje sledeću liniju koja će biti izvršena 
+(\textendash> my\_list = [1,9,13,3,12]).
+Komandom n (next) izvršavamo sledeću liniju.
+\begin{lstlisting}[language = bash, caption={ispis}]
+(Pdb) n
+> prvi.py(2)<module>()
+-> new_list = list(map(lambda x: x*2,my_list))
+\end{lstlisting}
+S obzirom da je prva linija sada izvršena komandom p možemo prikazati vrednost neke
+ promenljive.
+\begin{lstlisting}[language = bash, caption={ispis}]
+(Pdb) p my_list
+[1,9,13,3,12
+\end{lstlisting}
+\begin{lstlisting}[language = bash, caption={ispis}]
+(Pdb) n
+> prvi.py(3)<module>()
+-> def sub(a,b):
+(Pdb) n
+> prvi.py(6)<module>()
+-> diff = sub(40,2)
+(Pdb) s
+--Call--
+> prvi.py(3)<module>()
+-> def sub(a,b):
+\end{lstlisting}
+Ovde zapravo mozemo uočiti razliku izmedju n(next) i s(step) komande. n izvršava narednu liniju, dok s izvršava narednu liniju ali ukoliko ona sadrži poziv neke funkcije onda se vrši skok na prvu liniju te funkcije. Iz prethodnog možemo videti da smo trenutno pauzirani na funkciji sub() i sad prolazimo kroz nju.
+\begin{lstlisting}[language = bash, caption={ispis}]
+(Pdb) n
+> prvi.py(4)sub()
+->print(a)
+(Pdb) n
+40
+>prvi.py(5)sub()
+->return a-b
+(Pdb) n
+--Return--
+>prvi.py(5)sub->38
+->return a-b
+\end{lstlisting}
+I n i s će prekinuti izvršavanje kada dođemo do kraja trenutne funkcije i štampa se \textendash \textendash Return \textendash\textendash zajedno sa povratnom vrednošću na kraju sledećeg reda nakon \textendash>. Komanda Enter pamti poslednju unetu komadu, u ovom primeru je n. Ukoliko unesemo jos 3 puta n zaredom prijaviće nam grešku ZeroDivisionError. Komandom q prekidamo debagovanje i izlazimo iz programa.
+\subsection{Postavljanje tacaka prekida}
+Tačke prekida(eng. breakpoints) mogu nam uštedeti puno vremena. Postavljamo ih tamo gde želimo da istražujemo. U naš prethodni primer dodajemo:
+\begin{lstlisting}[language = python, caption = {prvi.py}]
+import pdb; pdb.set_trace()
+experiment = sum(new_list) / sub(diff,my_list_sum)
+\end{lstlisting}
+Ako sada program prevedemo sa python prvi.py prva linija za izvršavanje korišćenjem debagera biće experiment = sum(new\_list) / sub(diff,my\_list\_sum). U slučaju da to uradimo dopunom \textendash m  pdb dobijamo
+\begin{lstlisting}[language = bash, caption={ispis}]
+>prvi.py(1)<module>()
+->my_list = [1,9,13,3,12]
+(Pdb)
+\end{lstlisting}
+Komanda c nastavlja izvršavanje dok se ne naiđe na tačku prekida.
+\begin{lstlisting}[language = bash, caption={ispis}]
+(Pdb) c
+40
+>prvi.py(9)<module>()
+->experiment = sum(new_list) / sub(diff,my_list_sum)
+(Pdb) n
+38
+ZeroDivisionError: division by zero
+\end{lstlisting}
+Tačke prekida možemo postavljati i komandom b (break). Navodi se broj linije ili ime funkcije u kojoj je izvršavanje zaustavljeno. U našem primeru bi to bilo, ako zakomentarišemo deo koji smo dodali:
+\begin{lstlisting}[language = bash, caption={ispis}]
+(Pdb) b 9 
+\end{lstlisting}
+jer je linija koju istrazujemo deveta u kodu.
+Opis nekih komandi koje nismo naveli u primeru možete pogledati u tabeli.
+
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+\begin{center}
+ \begin{tabular}{||p{3cm} p{7cm}||} 
+ \hline
+  komanda &      opis i komentar \\ [2.0ex] 
+ \hline\hline
+  a(rgs) & Ispisuje listu argumenata trenutne funkcije.  \\  [2ex]   
+ \hline
+ cl(ear) <number> & Uklanja tačku prekida obeleženu brojem.  \\ [2ex]
+ \hline
+ w(here) & Prikazuje stanje steka(eng. stack trace). Ono što je najskorije dodato na stek se prikazuje na kraju. Pomaže nam da uočimo gde je izvršavanje zaustavljeno i koji je trenutni stek okvir. \\ [2ex]
+ \hline
+ u(p) [count] & Menja trenutni stek okvir i pomera ga za count nivoa iznad (ranije dodato) na stek okviru.  \\ [2ex]
+  \hline
+ d(own) [count] & Menja trenutni stek okvir i pomera ga za count nivoa ispod (kasnije dodato) na stek okviru.  \\ [2ex] 
+ \hline
+  \hline
+ display [epression] & Ukoliko dođe do promene vrednosti izraza kada se izvršavanje zaustavi display komandom automatski prikazujemo vrednost izraza. Ova komanda prikazuje sve izraze trenutnog stek okvira.\\ [2ex] 
+ \hline
+ \hline
+ undisplay [epression] & Sluzi za brisanje prikaza trenutnog stek okvira.  \\ [2ex] 
+ \hline
+\end{tabular}
+\end{center}
+
+
+
+
+
+
+
+
 
 \section{Ostali python debageri}
 
