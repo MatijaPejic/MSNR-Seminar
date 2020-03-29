@@ -326,11 +326,11 @@ Do sada smo videli kako se koristi PDB debager ali postoje i drugi alati za deba
 Moguće je debagovati korišćenjem nekih editora koji podržavaju jezik Python. Na prethodnoj slici \ref{fig:pie} možemo videti neke od njih.
 
 \section{Debagovanje u okružnju PyCharm}
-U ovom delu pokazaćemo kako debagovati u razvojnom okruženju PyCharm. Da bi započeli debug sesiju prvo moramo postaviti \emph{prekide (eng. breakpoint)} koji će signalizirati debageru  da treba da se zaustavi na određenom mestu u k\^{o}du i da nam da izveštaj stanja u tom trenutku. Breakpoint postavljamo tako što klinemo na prazninu uz levu marginu.
+U ovom delu pokazaćemo kako debagovati u razvojnom okruženju PyCharm. Da bi započeli debagovanje prvo moramo postaviti \emph{tačke prekida (eng. breakpoint)} koji će signalizirati debageru  da treba da se zaustavi na određenom mestu u k\^{o}du i da nam da izveštaj stanja u tom trenutku. Breakpoint postavljamo tako što klinemo na prazninu uz levu marginu.
 
 \includegraphics[scale = 0.4]{1}
 
-Znaćemo da je Breakpoint uspešno postavljen pojavom crvenog kružića. Prilikom pokretanja main funkcije našeg programa možemo izabrati opciju Debug, ovo će otvoriti \emph{Debug tool window} u kome možemo pokrenuti naš python k\^{o}d I gde ćemo dobijati sve informacije o izvršavanju. Informacije koje dobijamo mogu sadržati poruke o greškama, ne uhvaćene izuzeteke, vrednosti promenljivih (u svom zasebnom prozoru) i druge. PyCharm se automatski zaustavlja ukoliko naiđe na izuzetak koji nije uhvaćen inače se zaustavlja na lokaciji prvog breakpoint-a. Ukoliko program ima više niti dobićemo posebne prozore za svaku od njih.
+Znaćemo da je Breakpoint uspešno postavljen pojavom crvenog kružića\cite{pyCharm}. Prilikom pokretanja main funkcije našeg programa možemo izabrati opciju Debug, ovo će otvoriti \emph{Debug tool window} u kome možemo pokrenuti naš python k\^{o}d I gde ćemo dobijati sve informacije o izvršavanju. Informacije koje dobijamo mogu sadržati poruke o greškama, ne uhvaćene izuzetke, vrednosti promenljivih (u svom zasebnom prozoru) i druge\cite{pyCharm}. PyCharm se automatski zaustavlja ukoliko naiđe na izuzetak koji nije uhvaćen inače se zaustavlja na lokaciji prvog breakpoint-a\cite{pyCharm}. Ukoliko program ima više niti dobićemo posebne prozore za svaku od njih\cite{pyCharm}.
 \subsection{Detaljno debagovanje}
 Šta ako želimo da posmatramo izvršavanje našeg k\^{o}da korak po korak? Da li ovo znači da moramo postaviti breakpoint u svakoj liniji? Odgovor je ne, PyCharm debugger poseduje, u svom Debug tool window, takozvani \emph{Stepping toolbar}.
 
@@ -342,21 +342,21 @@ Znaćemo da je Breakpoint uspešno postavljen pojavom crvenog kružića. Priliko
 \item  Step Into
 \item Step Into My Code
 \end{itemize}
-Step Over jednostavno prelazi na sledeću liniju koda (linija na kojoj se trenutno nalazimo biće osenčena u editoru). Step Into opcija će nas voditi kroz biblioteke i funkcije koje koristimo kada na njih naiđemo.
+Step Over jednostavno prelazi na sledeću liniju koda (linija na kojoj se trenutno nalazimo biće osenčena u editoru). Step Into opcija će nas voditi kroz biblioteke i funkcije koje koristimo kada na njih naiđemo\cite{pyCharm}.
 \begin{lstlisting}[language = Python, caption={Primer neki}]
  x = random.nextInt();
  y = f(x);
 \end{lstlisting} 
- ovaj kod će nas odvesti u biblioteku Random ako na ovoj liniji koristimo opciju Step Into odnosno u definiciju funkcije f, ovo često ne želimo pa koristimo opciju Step Into My Code koja će nas zadržati u našem k\^{o}du. 
+ ovaj kod će nas odvesti u biblioteku Random ako na ovoj liniji koristimo opciju Step Into odnosno u definiciju funkcije f, ovo često ne želimo pa koristimo opciju Step Into My Code koja će nas zadržati u našem k\^{o}du\cite{pyCharm}. 
 \subsection{Posmatranja (Watches)}
-PyCharm nam omogućava da posmatramo promenljive kroz izvršavanje našeg programa. U tabu debagera \emph{Variables} se nalaze sve promenljive koje postoje i koje su vidljive u trenutnom stanju izvrsavanja i na trenutnoj lokaciji u kodu kao i njihov tip i vrednost. Ako klinknemo na \emph {plus} u gornjem levom uglu dobijamo opciju da dodamo bilo koju promenljivu i ona će biti praćena uvek bez obzira na to gde se ona nalazi, da li je trenutno vidljiva i da li je uopšte definisana.
+PyCharm nam omogućava da posmatramo promenljive kroz izvršavanje našeg programa. U tabu debagera \emph{Variables} se nalaze sve promenljive koje postoje i koje su vidljive u trenutnom stanju izvrsavanja i na trenutnoj lokaciji u kodu kao i njihov tip i vrednost\cite{pyCharm}. Ako klinknemo na \emph {plus} u gornjem levom uglu dobijamo opciju da dodamo bilo koju promenljivu i ona će biti praćena uvek bez obzira na to gde se ona nalazi, da li je trenutno vidljiva i da li je uopšte definisana\cite{pyCharm}.
 \subsection{Inline Debugger}
-Jedna od opcija koju nam pruža PyCharm jeste da klikom na Break point odmah dobijamo informacije o našim promenljivima i objektima odmah u editoru u vidu komentara. Ova opcija je podrazumevana i može se promeniti u Debug Tool window-u.
+Jedna od opcija koju nam pruža PyCharm jeste da klikom na Break point odmah dobijamo informacije o našim promenljivima i objektima odmah u editoru u vidu komentara. Ova opcija je podrazumevana i može se promeniti u Debug Tool window-u\cite{pyCharm}.
 
 
 \includegraphics[scale = 0.4]{3}
 \subsection{Evaluacija izraza}
-Poslednja opcija koja se nalazi na Stepping Toolbar-u je opcija za evaluaciju izraza. Ovo opcija nam omogućava da izračunamo vrednost neke promenljive koja nam je trenutno u opsegu ili nekog izraza. Pitanje koje se postavlja je zašto bi ovo koristili jer isto možemo dobiti korišćenjem Posmatranja. Ovo je tačno ali evaluacijom možemo uraditi nešto što Posmatranje ne može, a to je da postavimo vrednost nekoj promenljivoj. Ovo je jako korisno jer mozemo testirati naš kod za neke kritične vrednosti tako što ćemo na `vestack` nacin da dodeljujemo vrednosti promenljivima koje će nas dovesti do tog kriticnog stanja.
+Poslednja opcija koja se nalazi na Stepping Toolbar-u je opcija za evaluaciju izraza. Ovo opcija nam omogućava da izračunamo vrednost neke promenljive koja nam je trenutno u opsegu ili nekog izraza\cite{pyCharm}. Pitanje koje se postavlja je zašto bi ovo koristili jer isto možemo dobiti korišćenjem Posmatranja. Ovo je tačno ali evaluacijom možemo uraditi nešto što Posmatranje ne može, a to je da postavimo vrednost nekoj promenljivoj\cite{pyCharm}. Ovo je jako korisno jer mozemo testirati naš kod za neke kritične vrednosti tako što ćemo na `vestacki` nacin da dodeljujemo vrednosti promenljivima koje će nas dovesti do tog kriticnog stanja.
 
 \includegraphics[scale = 0.4]{4}
 \section{Zaključak}
