@@ -63,6 +63,7 @@
 
 \abstract{
 U ovom tekstu je ukratko prikazana osnovna forma seminarskog rada. Obratite pažnju da je pored ove .pdf datoteke, u prilogu i odgovarajuća .tex datoteka, kao i .bib datoteka korišćena za generisanje literature. Na prvoj strani seminarskog rada su naslov, apstrakt i sadržaj, i to sve mora da stane na prvu stranu! Kako bi Vaš seminarski zadovoljio standarde i očekivanja, koristite uputstva i materijale sa predavanja na temu pisanja seminarskih radova. Ovo je samo šablon koji se odnosi na fizički izgled seminarskog rada (šablon koji \emph{morate} da koristite!) kao i par tehničkih pomoćnih uputstava. Pročitajte tekst pažljivo jer on sadrži i važne informacije vezane za zahteve obima i karakteristika seminarskog rada.}
+
 \setcounter{tocdepth}{1}
 \tableofcontents
 
@@ -71,9 +72,9 @@ U ovom tekstu je ukratko prikazana osnovna forma seminarskog rada. Obratite paž
 \section{Uvod}
 \label{sec:uvod}
 
-Uvodni deo seminarskog
+Greške pri pisanju k\^{o}da se svima nama dešavaju, bilo da smo početnici u programiranju ili programiramo već duži niz godina. Niko nije savršen i greške pravimo svi. Čak i najjednostavnije greške umeju da nas dovedu do frustracija u traženju i rešavanju istih. Mi ćemo prikazati nekoliko tehnika debagovanja. Krenućemo od rešavanja jednostavnijih grešaka metodama analiziranja k\^{o}da i naprednijim tehnikama naučnom metodom sve do korišćenja PDB debagera i razvojnog okruženja PyCharm.
 
-\section{Izuzeci u Pythonu}
+\section{Sintaksne greške u Python-u}
 Svaki put kada program ne radi onako kako smo očekivali znamo da je došlo do greške, odnosno baga. Debagovanje je proces pronalaženja i rešavanja tih greški. Ono podrazumeva sledeće stvari:
 \begin{itemize}
 \item Da znamo kako program treba da radi
@@ -81,13 +82,14 @@ Svaki put kada program ne radi onako kako smo očekivali znamo da je došlo do g
 \item Shvatamo da bag treba da uklonimo
 \item Uklanjamo bag
 \end{itemize}
+\subsection{Izuzeci u Python-u}
 U Pythonu postoji 47 različitih izuzetaka, predstavljene kao hijerarhija izuzetaka \cite{excDocPyt}. Kada program izbaci izuzetak tada znamo da je do greške sigurno došlo i želimo da program taj izuzetak ne izbacuje. \emph{Ako je program kuća, izuzetak bi označavao da je požar u kući} \cite{proPyDeb}. Izuzetke možemo da shvatamo kao bagove za koje znamo da postoje. Razmotrićemo tri osnovne strategije za debagovanje izuzetaka:
 \begin{itemize}
-\item Čitanje koda na mestu baga
+\item Čitanje k\^{o}da na mestu baga
 \item Razumevanje poruke o grešci
 \item Hvatanje izuzetaka
 \end{itemize}
-\subsection{Sintaksne greške}
+\subsection{Čitanje k\^{o}da na mestu baga}
 Najlakši izuzeci za debagovanje su \emph{SyntaxError} i \emph{IndentionError}, gde u oba slučaja prevodilac ne zna da prevede k\^{o}d. Ovakvi bagovi mogu da budu i česta pojava u Pythonu zbog razlika koje imaju verzije \emph{Python2} i \emph{Python3}, na primer funkcija \textbf{print} nema istu sintaksu u obe verzije. Tako da se neki programi prevode sa verzijom 2, a sa verzijom 3 izbacuju sintaksne greške. Razmotrimo sledeći primer u kome funkcija student treba da ispiše broj indeksa za zadato ime studenta.
 \begin{lstlisting}[language = Python, caption={Funkcija student ispisuje broj indeksa za zadato ime studenta}]
 def student(name):
@@ -109,7 +111,7 @@ Program ne uspeva da se prevede i izbacuje narednu grešku.
 SyntaxError: invalid syntax
 \end{lstlisting}
 Python je izbacio \emph{SyntaxError} jer smo zaboravili zarez u liniji 4, s obzirom da je sintaksni analizator očekivao da su elementi u mapi razdvojeni zarezom izbacio je izuzetak. Slično, da smo posle dvotačke u prvoj liniji zaboravili da sledeća linija treba da bude nazubljena program bi izbacio \emph{IndentionError}.\\
-Sintaksne greške su često uzrok brzog kucanja, prelazak sa nekog drugog jezika, prelazak sa druge verzije jezika. Kod pojave ovakvih greški najbolje je gledati liniju greške (ili liniju iznad nje), prebaciti deo programa u zaseban fajl, proveriti uparenost zagrada i navodnika, proveritu da li je dobra verzija samog Python-a i preporučuje se korišćenje nekog naprednijeg editora.
+Sintaksne greške su često uzrok brzog kucanja, prelazak sa nekog drugog jezika, prelazak sa druge verzije jezika. Kod pojave ovakvih greški najbolje je gledati liniju greške (ili liniju iznad nje), prebaciti deo programa u zaseban fajl, proveriti uparenost zagrada i navodnika, proveritu da li je dobra verzija samog Python-a i preporučuje se korišćenje nekog naprednijeg editora \cite{proPyDeb}.
 \subsection{Poruka o grešci}
 Kao što smo već mogli da vidimo, kada u programu postoji sintaksna greška prevodilac izbacuje izuzetak i ispisuje poruku o grešci. Svaka poruka o grešci sadrži: \textbf{tip greške}, \textbf{opis greške} i \textbf{traceback}.
 
@@ -119,7 +121,7 @@ Traceback sadrži informaciju gde je program pukao. Ispisuju se segmenti program
 \subsection{Hvatanje izuzetaka}
 Neki izuzeci se ne mogu izbeći, ako uzmemo za primer da učitavamo neku datoteku i unesemo loše putanju ili možda ta datoteka više ne postoji, prevodilac će nam izbaciti \emph{FileNotFoundError}. Na ovakve greške najbolje je rešiti hvatanjem izuzetaka ununtar programa. To možemo da postignemo sa \textbf{try} i \textbf{except} blokom. Sa try pokušamo da pročitamo datoteku, ako dođe do izuzetka except blok će "uhvatiti" taj izuzetak i na tom mestu reagovati najčešće nekom porukom.\\
 Ono što treba izbegavati sa hvatanjem izuzetaka jeste da u except bloku stavimo pass i na taj način nastavimo dalje izvršavanje programa kao da do izuzetka nije došlo\cite{proPyDeb}.
-\subsection{Semantičke greške u Python-u}	
+\section{Semantičke greške u Python-u}	
 Program se preveo i ne izbacuje izuzetak, međutim i dalje ne dobijamo željeni rezultat, ovakve greške nazivamo semantičkim greškama. Takve greške je obično teže debagovati jer nemamo nikakvu informaciju od prevodioca da je do greške došlo, jedina informacija koju imamo jeste da ne dobijamo željeni rezultat. 
 \begin{lstlisting}[language = python, caption = {Funkcija koja računa sumu prvih n brojeva}]
 def suma(n):
@@ -130,7 +132,7 @@ def suma(n):
 
 print(suma(3)) # 6
 \end{lstlisting}
-U prethodnom primeru program računa sumu prvih n brojeva. Nekih od semantičkih greški koje su mogle da se dese su da range ide do n umesto do n+1, umesto operatora += staviti samo =, pogrešna inicijalizacija početne vrednosti za k, inicijalizacija unutar petlje umesto pre petlje.\\
+U prethodnom primeru program računa sumu prvih n brojeva. Nekih od semantičkih greški koje su mogle da se dese su da range ide do n umesto do n+1, umesto operatora += staviti samo =, pogrešna inicijalizacija početne vrednosti za k, inicijalizacija unutar petlje umesto pre petlje \cite{proPyDeb}.\\
 Semantičke greške se obično teže debaguju u ovakvim lakim primerima mogu da se uoče, ali u nekim kompleksijim primerima potrebne su neke od naprednihih tehnika. U narednim delovima ćemo se posvetiti tehnikama debagovanja, tehnike i upotrebe debagera i upotreba IDE za debagovanje.
 
 \section{Debagovanje naučnom metodom}
@@ -173,7 +175,7 @@ Ono što on stvara su objekti LogRecord klase. Svaki ovaj log zapis sadrži info
 
 \section{PDB debager}
 Pdb je deo Python standardne biblioteke i predstavlja interaktivni program za otklanjanje grešaka(eng. debugger)\cite{pdbDocPyt}. Ukoliko dođe do greške u kodu predstavlja neophodan alat i poseduje velike mogućnosti poput praćenja izvršavanja programa korak po korak što predstavlja pomoć pri rešavanju bagova na koje nailazimo ili pak za bolje razumevanje tuđeg koda. S obzirom da je u praksi u velikoj upotrebi cilj je da Vas kroz ovaj tekst upoznamo sa svim beneficijama upotrebe debagera i da klasičnu print metodu zaboravimo. Koristeći pip većinu verzija instaliramo sa:
-\\pip install ipdb
+\\ \emph{pip install ipdb}
 \\ipdb-naprednija verzija standardnog Python pdb debagera.
 \subsection{Pokretanje debagera}
 Debagovanje našeg programa možemo pokrenuti:
@@ -182,17 +184,17 @@ Debagovanje našeg programa možemo pokrenuti:
 \item iz samog programa
 \end{itemize}
 Što se tiče komandne linije ukoliko program imenujemo kao prvi.py pokrećemo ga pod kontrolom debagera sa:
-\\python -m pdb prvi.py arg1 arg2
+\\\emph{python -m pdb prvi.py arg1 arg2}
 \\pdb.py se zapravo poziva kao skript za debagovanje drugih skriptova. U ovom slučaju izvršavanje programa u debageru kreće od prve linije.
 \\Pokretanje debagera iz samog programa možemo otpočeti na početku programa, iz proizvoljne linije ili nakon ispaljivanja izuzetka. To činimo tako što umetnemo određeni deo koda u program na mesto odakle želimo da započnemo proces debagovanja.
-\begin{lstlisting}[language = python, caption = {}]
+\begin{lstlisting}[language = python, caption = {Započinjemo debagovanje}]
 import pdb; pdb.set_trace()
 \end{lstlisting}
 pdb.set\_trace() postavlja debager za pozivajući stek okvir. Debager je proširiv i zapravo je definisan kao klasa Pdb. Kada se izvrši linija iznad program se zaustavlja i čeka sledeću naredbu. Prikazuje se pdb prompt. To znaci da je postavljena pauza u interaktivnom debageru i da mozemo uneti komandu.
-Od verzije 3.7 možemo pokrenuti debager funkcijom breakpoints() koja importuje pdb i poziva pdb.set\_trace() \cite{pdbExamples}. Definisanjem promenljive BREAKPOINTS=0 onemogućavamo breakpoints() čime prekidamo debagovanje.
+Od verzije 3.7 možemo pokrenuti debager funkcijom breakpoints() koja importuje pdb i poziva pdb.set\_trace() \cite{pdbExamples}. Definisanjem promenljive BREAKPOINTS=0 onemogućavamo breakpoints() čime prekidamo debagovanje \cite{pdbExamples}.
 \subsection{Debagovanje korak po korak}
 Ovu priču započinjemo primerom prvi.py.
-\begin{lstlisting}[language = python, caption = {prvi.py}]
+\begin{lstlisting}[language = python, caption = {Primer za ilustrovanje narednih komandi (prvi.py)}]
 my_list = [1,9,13,3,12]
 new_list = list(map(lambda x: x*2,my_list))
 
@@ -204,29 +206,29 @@ diff = sub(40,2)
 my_list_sum = sum(my_list)
 experiment = sum(new_list) / sub(diff,my_list_sum)
 \end{lstlisting}
-Kada pokrenemo skript koristeći Python debager komandom python -m pdb prvi.py vidimo u konzoli
-\begin{lstlisting}[language = bash, caption={ispis}]
+Kada pokrenemo skript koristeći Python debager komandom \emph{python -m pdb prvi.py} vidimo u konzoli
+\begin{lstlisting}[language = bash, caption={Ulazak u Pdb prompt}]
 > prvi.py(1)<module>()
 -> my_list = [1,9,13,3,12]
 (Pdb)
 \end{lstlisting}
-CLI(eng comand line interface) nam govori:\\
+CLI(eng. command line interface) nam govori:\\
 > započinje prvi red i govori u kojoj izvornoj datoteci se nalazimo, nakon toga u zagradama se nalazi broj linije u kodu na kojoj se nalazimo, a potom i ime funkcije. U slučaju da nismo upali u neku funkciju pisaće <module>()\\
 \textendash>  započinje drugu liniju i to je trenutna linija u kojoj je program pauziran. Ta linija još uvek nije izvršena. Debager nam prikazuje sledeću liniju koja će biti izvršena 
 (\textendash> my\_list = [1,9,13,3,12]).
 Komandom n (next) izvršavamo sledeću liniju.
-\begin{lstlisting}[language = bash, caption={ispis}]
+\begin{lstlisting}[language = bash, caption={Izvršavanje prve linije k\^{o}da}]
 (Pdb) n
 > prvi.py(2)<module>()
 -> new_list = list(map(lambda x: x*2,my_list))
 \end{lstlisting}
 S obzirom da je prva linija sada izvršena komandom p možemo prikazati vrednost neke
  promenljive.
-\begin{lstlisting}[language = bash, caption={ispis}]
+\begin{lstlisting}[language = bash, caption={Štampanje promenljive \emph{my\_list}}]
 (Pdb) p my_list
 [1,9,13,3,12]
 \end{lstlisting}
-\begin{lstlisting}[language = bash, caption={ispis}]
+\begin{lstlisting}[language = bash, caption={Izvršavanje naredne dve linije i ulazak u funkciju \emph{sub(40, 2)}}]
 (Pdb) n
 > prvi.py(3)<module>()
 -> def sub(a,b):
@@ -238,8 +240,8 @@ S obzirom da je prva linija sada izvršena komandom p možemo prikazati vrednost
 > prvi.py(3)<module>()
 -> def sub(a,b):
 \end{lstlisting}
-Ovde zapravo mozemo uočiti razliku izmedju n(next) i s(step) komande. n izvršava narednu liniju, dok s izvršava narednu liniju ali ukoliko ona sadrži poziv neke funkcije onda se vrši skok na prvu liniju te funkcije. Iz prethodnog možemo videti da smo trenutno pauzirani na funkciji sub() i sad prolazimo kroz nju.
-\begin{lstlisting}[language = bash, caption={ispis}]
+Ovde zapravo mozemo uočiti razliku izmedju n(next) i s(step) komande. Komanda n izvršava narednu liniju, dok s izvršava narednu liniju ali ukoliko ona sadrži poziv neke funkcije onda se vrši skok na prvu liniju te funkcije. Iz prethodnog možemo videti da smo trenutno pauzirani na funkciji sub() i sad prolazimo kroz nju.
+\begin{lstlisting}[language = bash, caption={Izvršavamo prve tri linije u funkciji \emph{sub(40, 2)}}]
 (Pdb) n
 > prvi.py(4)sub()
 ->print(a)
@@ -255,18 +257,18 @@ Ovde zapravo mozemo uočiti razliku izmedju n(next) i s(step) komande. n izvrša
 I n i s će prekinuti izvršavanje kada dođemo do kraja trenutne funkcije i štampa se \textendash \textendash Return \textendash\textendash zajedno sa povratnom vrednošću na kraju sledećeg reda nakon \textendash>. Komanda Enter pamti poslednju unetu komadu, u ovom primeru je n. Ukoliko unesemo jos 3 puta n zaredom prijaviće nam grešku ZeroDivisionError. Komandom q prekidamo debagovanje i izlazimo iz programa.
 \subsection{Postavljanje tacaka prekida}
 Tačke prekida(eng. breakpoints) mogu nam uštedeti puno vremena. Postavljamo ih tamo gde želimo da istražujemo. U naš prethodni primer dodajemo:
-\begin{lstlisting}[language = python, caption = {prvi.py}]
+\begin{lstlisting}[language = python, caption = {U primer prvi.py na ovom mestu dodata prva linija}]
 import pdb; pdb.set_trace()
 experiment = sum(new_list) / sub(diff,my_list_sum)
 \end{lstlisting}
-Ako sada program prevedemo sa python prvi.py prva linija za izvršavanje korišćenjem debagera biće experiment = sum(new\_list) / sub(diff,my\_list\_sum). U slučaju da to uradimo dopunom \textendash m  pdb dobijamo
-\begin{lstlisting}[language = bash, caption={ispis}]
+Ako sada program pokrenemo sa \emph{python prvi.py} (slučaj 1) prva linija za izvršavanje korišćenjem debagera biće \emph{experiment = sum(new\_list) / sub(diff,my\_list\_sum)}. U slučaju da dodamo i ove argumente \emph{\textendash m  pdb} (slučaj 2) dobijamo
+\begin{lstlisting}[language = bash, caption={U slučaju 2 izvršavanje kreće od prve linije}]
 >prvi.py(1)<module>()
 ->my_list = [1,9,13,3,12]
 (Pdb)
 \end{lstlisting}
-Komanda c nastavlja izvršavanje dok se ne naiđe na tačku prekida.
-\begin{lstlisting}[language = bash, caption={ispis}]
+Komanda c (continue) nastavlja izvršavanje dok se ne naiđe na tačku prekida.
+\begin{lstlisting}[language = bash, caption={Nastavlja se izvršavanje do tačke prekida i izvršava sledeću liniju}]
 (Pdb) c
 40
 >prvi.py(9)<module>()
@@ -276,15 +278,17 @@ Komanda c nastavlja izvršavanje dok se ne naiđe na tačku prekida.
 ZeroDivisionError: division by zero
 \end{lstlisting}
 Tačke prekida možemo postavljati i komandom b (break). Navodi se broj linije ili ime funkcije u kojoj je izvršavanje zaustavljeno. U našem primeru bi to bilo, ako zakomentarišemo deo koji smo dodali:
-\begin{lstlisting}[language = bash, caption={ispis}]
+\begin{lstlisting}[language = bash, caption={Na liniji 9 postavljamo tačku prekida}]
 (Pdb) b 9 
 \end{lstlisting}
 jer je linija koju istražujemo deveta u kodu.
-Opis nekih komandi koje nismo naveli u primeru možete pogledati u tabeli.
+Opis nekih komandi koje nismo naveli u primeru možete pogledati u tabeli \ref{tab:tabela1}.
 
 \definecolor{LightCyan}{rgb}{0.88,1,1}
+\begin{table}[h!]
 \begin{center}
- \begin{tabular}{||p{3cm} p{7cm}||} 
+\caption{pdb komande}
+ \begin{tabular}{||p{4cm} p{7cm}||} 
  \hline
   komanda &      opis i komentar \\ [2.0ex] 
  \hline\hline
@@ -305,7 +309,9 @@ Opis nekih komandi koje nismo naveli u primeru možete pogledati u tabeli.
  undisplay [expression] & Služi za brisanje prikaza trenutnog stek okvira.  \\ [2ex] 
  \hline
 \end{tabular}
+\label{tab:tabela1}
 \end{center}
+\end{table}
 
 \subsection{Ostali python debageri}
 Do sada smo videli kako se koristi PDB debager ali postoje i drugi alati za debagovanje. Jedni od najpoznatijih i najkorišćenijih su bdb \cite{bdbDocPyt}, pydbgr, pudb, ipdb, pdb++.
@@ -314,9 +320,10 @@ Do sada smo videli kako se koristi PDB debager ali postoje i drugi alati za deba
 \includegraphics[scale=0.25]{pie.png}
 \end{center}
 \caption{Populari Editori i IDE za rad sa Python-om}
-\label{fig:pande}
+\label{fig:pie}
 \end{figure}
-Moguće je debagovati korišćenjem nekih editora koji podržavaju jezik Python. Na prethodnoj slici možemo videti neke od njih.
+
+Moguće je debagovati korišćenjem nekih editora koji podržavaju jezik Python. Na prethodnoj slici \ref{fig:pie} možemo videti neke od njih.
 
 \section{Debagovanje u okružnju PyCharm}
 U ovom delu pokazaćemo kako debagovati u razvojnom okruženju PyCharm. Da bi započeli debagovanje prvo moramo postaviti \emph{tačke prekida (eng. breakpoint)} koji će signalizirati debageru  da treba da se zaustavi na određenom mestu u k\^{o}du i da nam da izveštaj stanja u tom trenutku. Breakpoint postavljamo tako što klinemo na prazninu uz levu marginu.
@@ -355,13 +362,15 @@ Poslednja opcija koja se nalazi na Stepping Toolbar-u je opcija za evaluaciju iz
 \section{Zaključak}
 \label{sec:zakljucak}
 
-Ovde pišem zaključak. 
+Pajton je široko rasprostranjen i popularan jezik zbog svoje jednostavnosti, lakoće u pisanju i pristupačnosti za početnike. Ne odlikuje ga stroga tipiziranost i sam jezik omogućava pisanje na višem, apstraktnijem nivou. To nekada znači da nam on više “prašta” nego što bi trebalo i da se mogu “potkriti” razne greške. Zato je neophodno imati dobre alate za debagovanje koji mogu delovati kao ključni posrednici u pisanju korektnog koda, čineći taj proces efikasnim i nenapornim. Tako imamo odličnu kombinaciju udobnosti u pisanju i pouzdanosti koda. Od preventivnih mera kao što je hvatanje izuzetaka i jednostavnijih metoda debagovanja kao što su interakcija sa programom preko terminala i korišćenje print naredbi, zatim formalne naučne metode, pa sve do složenijih biblioteka logging, pdb i okruženja PyCharm, čitaocu je sada poznato više mehanizama debagovanja, koji predstavljaju samo jedan deo širokog opusa mogućnosti. Postoji mnogo više alata i oni sa pomenutim dele ključne koncepte. Za većinu njih postoji opsežna dokumentacija i dosta pomoći na internetu, što zbog popularnosti alata, što zbog popularnosti samog jezika. Ostavlja se čitaocu da preko datih objašnjenja izabere odgovarajući metod na osnovu svojih potreba i preferensi.
 
 
 \addcontentsline{toc}{section}{Literatura}
 \appendix
 \bibliography{seminarski} 
 \bibliographystyle{plain}
+
+\newpage
 
 \appendix
 \section{Dodatak}
