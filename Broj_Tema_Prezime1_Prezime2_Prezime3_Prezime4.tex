@@ -343,11 +343,11 @@ Znaćemo da je Breakpoint uspešno postavljen pojavom crvenog kružića\cite{pyC
 \item Step Into My Code
 \end{itemize}
 Step Over jednostavno prelazi na sledeću liniju koda (linija na kojoj se trenutno nalazimo biće osenčena u editoru). Step Into opcija će nas voditi kroz biblioteke i funkcije koje koristimo kada na njih naiđemo\cite{pyCharm}.
-\begin{lstlisting}[language = Python, caption={Primer neki}]
+\begin{lstlisting}[language = Python, caption={Primer Python  k\^{o}da}]
  x = random.nextInt();
  y = f(x);
 \end{lstlisting} 
- ovaj kod će nas odvesti u biblioteku Random ako na ovoj liniji koristimo opciju Step Into odnosno u definiciju funkcije f, ovo često ne želimo pa koristimo opciju Step Into My Code koja će nas zadržati u našem k\^{o}du\cite{pyCharm}. 
+ Ovaj kod će nas odvesti u biblioteku Random ako na ovoj liniji koristimo opciju Step Into odnosno u definiciju funkcije f, ovo često ne želimo pa koristimo opciju Step Into My Code koja će nas zadržati u našem k\^{o}du\cite{pyCharm}. 
 \subsection{Posmatranja (Watches)}
 PyCharm nam omogućava da posmatramo promenljive kroz izvršavanje našeg programa. U tabu debagera \emph{Variables} se nalaze sve promenljive koje postoje i koje su vidljive u trenutnom stanju izvrsavanja i na trenutnoj lokaciji u kodu kao i njihov tip i vrednost\cite{pyCharm}. Ako klinknemo na \emph {plus} u gornjem levom uglu dobijamo opciju da dodamo bilo koju promenljivu i ona će biti praćena uvek bez obzira na to gde se ona nalazi, da li je trenutno vidljiva i da li je uopšte definisana\cite{pyCharm}.
 \subsection{Inline Debugger}
