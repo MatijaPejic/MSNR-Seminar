@@ -192,26 +192,31 @@ Ovaj koncept se može proširiti Python bibliotekama \textbf{logging} \cite{logD
 Ono što on stvara su objekti LogRecord klase. Svaki ovaj log zapis sadrži informacije o događaju koji se loguje, i sa njim kasnije rade druge klase iz ove bilioteke. Te klase su Handler-i koji šalju log zapise na odgovarajuću destinaciju i Filter-i koji na sofisticiraniji način od setLevel funkcije određuju koje log zapise staviti na izlaz. Tu su i Formatter-i koji određuju formu log zapisa na konačnom izlazu, mapirajući LogRecord objekat u nešto čitljivo čoveku ili nekom eksternom sistemu, najčešće string. 
 
 \section{PDB debager}
-Pdb je deo Python standardne biblioteke i predstavlja interaktivni program za otklanjanje grešaka(eng. debugger)\cite{pdbDocPyt}. Ukoliko dođe do greške u kodu predstavlja neophodan alat i poseduje velike mogućnosti poput praćenja izvršavanja programa korak po korak što predstavlja pomoć pri rešavanju bagova na koje nailazimo ili pak za bolje razumevanje tuđeg koda. S obzirom da je u praksi u velikoj upotrebi cilj je da Vas kroz ovaj tekst upoznamo sa svim beneficijama upotrebe debagera i da klasičnu print metodu zaboravimo. Koristeći pip većinu verzija instaliramo sa:
-\\ \emph{pip install ipdb}
-\\ipdb-naprednija verzija standardnog Python pdb debagera.
+Pdb je deo Python standardne biblioteke i predstavlja interaktivni program za otklanjanje grešaka(eng. debugger)\cite{pdbDocPyt}. Ukoliko dođe do greške u kodu, predstavlja neophodan alat i poseduje velike mogućnosti poput praćenja izvršavanja programa korak po korak, pružajući nam pomoć pri rešavanju bagova ili pri razumevanju tuđeg koda. On rešava nedostatke prethodnih metoda i zbog svojih beneficija je u praksi u širokoj upotrebi. Zato se u ovom delu upoznajemo sa njim. Koristeći pip većinu verzija instaliramo sa:
+
+\emph{pip install ipdb}\\
+ipdb je naprednija verzija standardnog Python pdb debagera.
 \subsection{Pokretanje debagera}
 Debagovanje našeg programa možemo pokrenuti:
 \begin{itemize}
 \item iz komandne linije
 \item iz samog programa
 \end{itemize}
-Što se tiče komandne linije ukoliko program imenujemo kao prvi.py pokrećemo ga pod kontrolom debagera sa:
+
+Što se tiče komandne linije, ukoliko program imenujemo kao prvi.py pokrećemo ga pod kontrolom debagera sa:
 \\\emph{python -m pdb prvi.py arg1 arg2}
-\\pdb.py se zapravo poziva kao skript za debagovanje drugih skriptova. U ovom slučaju izvršavanje programa u debageru kreće od prve linije.
-\\Pokretanje debagera iz samog programa možemo otpočeti na početku programa, iz proizvoljne linije ili nakon ispaljivanja izuzetka. To činimo tako što umetnemo određeni deo koda u program na mesto odakle želimo da započnemo proces debagovanja.
+
+Zapravo, pdb.py poziva se kao skript za debagovanje drugih skriptova. U ovom slučaju izvršavanje programa u debageru kreće od prve linije.
+
+Pokretanje debagera iz samog programa možemo izvršiti na samom početku programa, iz proizvoljne linije ili nakon ispaljivanja izuzetka. To činimo tako što umetnemo određeni deo koda u program na mesto odakle želimo da započnemo proces debagovanja.
 \begin{lstlisting}[language = python, caption = {Započinjemo debagovanje}]
 import pdb; pdb.set_trace()
 \end{lstlisting}
-pdb.set\_trace() postavlja debager za pozivajući stek okvir. Debager je proširiv i zapravo je definisan kao klasa Pdb. Kada se izvrši linija iznad program se zaustavlja i čeka sledeću naredbu. Prikazuje se pdb prompt. To znaci da je postavljena pauza u interaktivnom debageru i da mozemo uneti komandu.
-Od verzije 3.7 možemo pokrenuti debager funkcijom breakpoints() koja importuje pdb i poziva pdb.set\_trace() \cite{pdbExamples}. Definisanjem promenljive BREAKPOINTS=0 onemogućavamo breakpoints() čime prekidamo debagovanje \cite{pdbExamples}.
+
+pdb.set\_trace() postavlja debager za pozivajući stek okvir. Debager je proširiv i zapravo je definisan kao klasa Pdb. Kada se izvrši linija iznad, program se zaustavlja i čeka sledeću naredbu. Prikazuje se pdb prompt. To znaci da je postavljena pauza u interaktivnom debageru i da mozemo uneti komandu.
+Od verzije 3.7 možemo pokrenuti debager funkcijom breakpoints() koja importuje pdb i poziva pdb.set\_trace() \cite{pdbExamples}. Definisanjem promenljive BREAKPOINTS=0 onemogućavamo breakpoints(), čime prekidamo debagovanje \cite{pdbExamples}.
 \subsection{Debagovanje korak po korak}
-Ovu priču započinjemo primerom prvi.py.
+Ilustovaćemo ga na primeru prvi.py.
 \begin{lstlisting}[language = python, caption = {Primer za ilustrovanje narednih komandi (prvi.py)}]
 my_list = [1,9,13,3,12]
 new_list = list(map(lambda x: x*2,my_list))
@@ -224,7 +229,8 @@ diff = sub(40,2)
 my_list_sum = sum(my_list)
 experiment = sum(new_list) / sub(diff,my_list_sum)
 \end{lstlisting}
-Kada pokrenemo skript koristeći Python debager komandom \emph{python -m pdb prvi.py} vidimo u konzoli
+
+Kada pokrenemo skript koristeći Python debager komandom \emph{python -m pdb prvi.py} vidimo u konzoli sledeće:
 \begin{lstlisting}[language = bash, caption={Ulazak u Pdb prompt}]
 > prvi.py(1)<module>()
 -> my_list = [1,9,13,3,12]
@@ -240,7 +246,8 @@ Komandom n (next) izvršavamo sledeću liniju.
 > prvi.py(2)<module>()
 -> new_list = list(map(lambda x: x*2,my_list))
 \end{lstlisting}
-S obzirom da je prva linija sada izvršena komandom p možemo prikazati vrednost neke
+
+S obzirom da je prva linija sada izvršena, komandom p možemo prikazati vrednost neke
  promenljive.
 \begin{lstlisting}[language = bash, caption={Štampanje promenljive \emph{my\_list}}]
 (Pdb) p my_list
@@ -258,7 +265,8 @@ S obzirom da je prva linija sada izvršena komandom p možemo prikazati vrednost
 > prvi.py(3)<module>()
 -> def sub(a,b):
 \end{lstlisting}
-Ovde zapravo mozemo uočiti razliku izmedju n(next) i s(step) komande. Komanda n izvršava narednu liniju, dok s izvršava narednu liniju ali ukoliko ona sadrži poziv neke funkcije onda se vrši skok na prvu liniju te funkcije. Iz prethodnog možemo videti da smo trenutno pauzirani na funkciji sub() i sad prolazimo kroz nju.
+
+Ovde zapravo mozemo uočiti razliku izmedju n(next) i s(step) komande. Komanda n izvršava narednu liniju, dok s izvršava narednu liniju, ali ukoliko ona sadrži poziv neke funkcije, onda se vrši skok na prvu liniju te funkcije. Iz prethodnog možemo videti da smo trenutno pauzirani na funkciji sub() i sad prolazimo kroz nju.
 \begin{lstlisting}[language = bash, caption={Izvršavamo prve tri linije u funkciji \emph{sub(40, 2)}}]
 (Pdb) n
 > prvi.py(4)sub()
@@ -272,14 +280,16 @@ Ovde zapravo mozemo uočiti razliku izmedju n(next) i s(step) komande. Komanda n
 >prvi.py(5)sub->38
 ->return a-b
 \end{lstlisting}
-I n i s će prekinuti izvršavanje kada dođemo do kraja trenutne funkcije i štampa se \textendash \textendash Return \textendash\textendash zajedno sa povratnom vrednošću na kraju sledećeg reda nakon \textendash>. Komanda Enter pamti poslednju unetu komadu, u ovom primeru je n. Ukoliko unesemo jos 3 puta n zaredom prijaviće nam grešku ZeroDivisionError. Komandom q prekidamo debagovanje i izlazimo iz programa.
+
+I n i s će prekinuti izvršavanje kada dođemo do kraja trenutne funkcije i štampa se \textendash \textendash Return \textendash\textendash zajedno sa povratnom vrednošću na kraju sledećeg reda nakon \textendash>. Komanda Enter pamti poslednju unetu komadu, a u ovom primeru je to n. Ukoliko unesemo jos 3 puta n zaredom prijaviće nam grešku ZeroDivisionError. Komandom q prekidamo debagovanje i izlazimo iz programa.
 \subsection{Postavljanje tačaka prekida}
 Tačke prekida(eng. breakpoints) mogu nam uštedeti puno vremena. Postavljamo ih tamo gde želimo da istražujemo. U naš prethodni primer dodajemo:
 \begin{lstlisting}[language = python, caption = {U primer prvi.py na ovom mestu dodata prva linija}]
 import pdb; pdb.set_trace()
 experiment = sum(new_list) / sub(diff,my_list_sum)
 \end{lstlisting}
-Ako sada program pokrenemo sa \emph{python prvi.py} (slučaj 1) prva linija za izvršavanje korišćenjem debagera biće \emph{experiment = sum(new\_list) / sub(diff,my\_list\_sum)}. U slučaju da dodamo i ove argumente \emph{\textendash m  pdb} (slučaj 2) dobijamo
+
+Ako sada program pokrenemo sa \emph{python prvi.py} (slučaj 1), prva linija za izvršavanje korišćenjem debagera biće \emph{experiment = sum(new\_list) / sub(diff,my\_list\_sum)}. U slučaju da dodamo i ove argumente \emph{\textendash m  pdb} (slučaj 2) dobijamo:
 \begin{lstlisting}[language = bash, caption={U slučaju 2 izvršavanje kreće od prve linije}]
 >prvi.py(1)<module>()
 ->my_list = [1,9,13,3,12]
@@ -295,6 +305,7 @@ Komanda c (continue) nastavlja izvršavanje dok se ne naiđe na tačku prekida.
 38
 ZeroDivisionError: division by zero
 \end{lstlisting}
+
 Tačke prekida možemo postavljati i komandom b (break). Navodi se broj linije ili ime funkcije u kojoj je izvršavanje zaustavljeno. U našem primeru bi to bilo, ako zakomentarišemo deo koji smo dodali:
 \begin{lstlisting}[language = bash, caption={Na liniji 9 postavljamo tačku prekida}]
 (Pdb) b 9 
@@ -321,7 +332,7 @@ Opis nekih komandi koje nismo naveli u primeru možete pogledati u tabeli \ref{t
  d(own) [count] & Menja trenutni stek okvir i pomera ga za count nivoa ispod (kasnije dodato) na stek okviru.  \\ [2ex] 
  \hline
   \hline
- display [expression] & Ukoliko dođe do promene vrednosti izraza kada se izvršavanje zaustavi display komandom automatski prikazujemo vrednost izraza. Ova komanda prikazuje sve izraze trenutnog stek okvira.\\ [2ex] 
+ display [expression] & Ukoliko dođe do promene vrednosti izraza kada se izvršavanje zaustavi, display komandom automatski prikazujemo vrednost izraza. Ova komanda prikazuje sve izraze trenutnog stek okvira.\\ [2ex] 
  \hline
  \hline
  undisplay [expression] & Služi za brisanje prikaza trenutnog stek okvira.  \\ [2ex] 
@@ -332,7 +343,7 @@ Opis nekih komandi koje nismo naveli u primeru možete pogledati u tabeli \ref{t
 \end{table}
 
 \subsection{Ostali python debageri}
-Do sada smo videli kako se koristi PDB debager ali postoje i drugi alati za debagovanje. Jedni od najpoznatijih i najkorišćenijih su bdb \cite{bdbDocPyt}, pydbgr, pudb, ipdb, pdb++.
+Do sada smo videli kako se koristi PDB debager, ali postoje i drugi alati za debagovanje. Neki od najpoznatijih i najkorišćenijih su bdb \cite{bdbDocPyt}, pydbgr, pudb, ipdb, pdb++.
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[scale=0.25]{pie.png}
