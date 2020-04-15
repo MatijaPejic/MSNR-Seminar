@@ -62,7 +62,7 @@
 \maketitle
 
 \abstract{
-Debagovanje je postupak pronalaženja grešaka i rešavanja ostalih problema unutar programa. Shodno tome u ovom radu su obrađene različite tehnike debagovanja, od nekih opštih do tehnika specifičnih za Python kao programski jezik. Izložićemo njihove prednosti i mane, kao i prigodne uslove za njihovo korišćenje. Da bi se postigao optimalan rad softvera neophodno je ovladati tehnikama i alatima za brzo uočavanje propusta pri pisanju koda. Takvim tehnikama štedimo vreme i učimo kako postati bolji programer. \\
+Debagovanje je postupak pronalaženja grešaka i rešavanja ostalih problema unutar programa. Shodno tome u ovom radu su obrađene različite tehnike debagovanja, od nekih opštih do tehnika specifičnih za \emph{Python} kao programski jezik. Izložićemo njihove prednosti i mane, kao i prigodne uslove za njihovo korišćenje. Da bi se postigao optimalan rad softvera neophodno je ovladati tehnikama i alatima za brzo uočavanje propusta pri pisanju k\^{o}da. Takvim tehnikama štedimo vreme i učimo kako postati bolji programer. \\
 Ključne reči: Python, debagovanje, debager, pdb, print, greška, PhyCharm}
 
 \setcounter{tocdepth}{1}
@@ -73,26 +73,26 @@ Ključne reči: Python, debagovanje, debager, pdb, print, greška, PhyCharm}
 \section{Uvod}
 \label{sec:uvod}
 
-Greške pri pisanju k\^{o}da se svima nama dešavaju, bilo da smo početnici u programiranju ili programiramo već duži niz godina. Čak i najjednostavnije greške umeju da nas dovedu do frustracija u traženju i rešavanju istih. Mi ćemo prikazati nekoliko tehnika debagovanja. Krenućemo od rešavanja jednostavnijih grešaka metodama analiziranja k\^{o}da i zatim preći na naprednije tehnike, naučnu metodu, sve do korišćenja PDB debagera i razvojnog okruženja PyCharm.
-
-\section{Sintaksne greške u Python-u}
+Greške pri pisanju k\^{o}da se svima nama dešavaju, bilo da smo početnici u programiranju ili programiramo već duži niz godina. Čak i najjednostavnije greške umeju da nas dovedu do frustracija u traženju i rešavanju istih.
 Svaki put kada program ne radi onako kako smo očekivali znamo da je došlo do greške, odnosno baga. Debagovanje je proces pronalaženja i rešavanja tih grešaka. Ono podrazumeva sledeće:
-\begin{itemize}
+\begin{enumerate}
 \item Znamo kako program treba da radi
 \item Opažamo da je do baga došlo
 \item Pronalazimo bag
 \item Uklanjamo bag
-\end{itemize}
-\subsection{Izuzeci u Python-u}
-U Python-u postoji 47 različitih izuzetaka koji zajedno čine hijerarhiju izuzetaka \cite{excDocPyt}. Kada program izbaci izuzetak, tada znamo da je do greške sigurno došlo. \emph{Ako je program kuća, izuzetak bi označavao da je požar u kući} \cite{proPyDeb}. Izuzetke možemo da shvatamo kao bagove za koje znamo da postoje. Razmotrićemo tri osnovne strategije za debagovanje izuzetaka:
+\end{enumerate}
+Mi ćemo prikazati nekoliko opštih tehnika debagovanja i korišćenje debagera.
+
+\section{Osnovni koncepti debagovanja u Python-u}
+U Python-u postoji 47 različitih izuzetaka koji zajedno formiraju hijerarhiju izuzetaka \cite{excDocPyt}. Kada program izbaci izuzetak, tada znamo da je do greške sigurno došlo. \emph{Ako je program kuća, izuzetak bi označavao da je požar u kući} \cite{proPyDeb}. Ako u programu dođe do izuzetka tada znamo da u programu ima bag. Razmotrićemo tri osnovne strategije za debagovanje izuzetaka:
 \begin{itemize}
 \item Čitanje k\^{o}da na mestu baga
 \item Razumevanje poruke o grešci
 \item Hvatanje izuzetaka
 \end{itemize}
-\subsection{Čitanje k\^{o}da na mestu baga}
-Najlakši izuzeci za debagovanje su \emph{SyntaxError} i \emph{IndentionError}. Oba predstavljaju slučaj u kome prevodilac ne zna da prevede k\^{o}d. Ovakvi bagovi mogu da budu česta pojava u Python-u zbog razlika između verzija \emph{Python2} i \emph{Python3}. Recimo, funkcija \textbf{print} nema istu sintaksu u ove dve verzije. Zbog toga se neki programi prevode sa verzijom 2, a sa verzijom 3 izbacuju sintaksne greške. Razmotrimo sledeći primer u kome funkcija student treba da ispiše broj indeksa za zadato ime studenta.
-\begin{lstlisting}[language = Python, caption={Funkcija student ispisuje broj indeksa za zadato ime studenta}]
+% \subsection{Čitanje k\^{o}da na mestu baga}
+Najlakši izuzeci za debagovanje su \emph{SyntaxError} i  \emph{IndentionError}. Oba predstavljaju slučaj u kome prevodilac ne zna da prevede k\^{o}d. Ovakvi bagovi mogu da budu česta pojava u Python-u zbog razlika između verzija \emph{Python2} i \emph{Python3}. Recimo, funkcija \textbf{print} nema istu sintaksu u ove dve verzije. Zbog toga se neki programi prevode sa verzijom 2, a sa verzijom 3 izbacuju sintaksne greške. Razmotrimo primer \ref{jedan} u kome funkcija student treba da ispiše broj indeksa za zadato ime studenta.
+\begin{lstlisting}[language = Python, caption={Funkcija student ispisuje broj indeksa za zadato ime studenta}, label=jedan]
 def student(name):
     students = {
         'Pera': '107/2016',
@@ -105,31 +105,30 @@ def student(name):
 student('Pera')
 \end{lstlisting}
 Ovaj program ne uspeva da se prevede i izbacuje narednu grešku.
-\begin{lstlisting}[language = bash, caption={Ispis iz konzole za prethodni primer}]
+\begin{lstlisting}[language = bash, caption={Ispis iz konzole za primer \ref{jedan}}, label=dva]
   File "primer.py", line 5
     'Laza': '252/2015'
           ^
 SyntaxError: invalid syntax
 \end{lstlisting}
-
 Python je izbacio \emph{SyntaxError}, jer smo zaboravili zarez u liniji 4. Sintaksni analizator očekuje da su elementi u mapi razdvojeni zarezom, i kako to nije ispunjeno, izbačen je izuzetak. Slično, da smo posle dvotačke u prvoj liniji zaboravili da sledeća linija treba da bude nazubljena, program bi izbacio \emph{IndentionError}.
 
 Sintaksne greške su često uzrok brzog kucanja, prelaska sa nekog drugog jezika ili druge verzije jezika. Kod pojave ovakvih grešaka, najbolje je gledati liniju greške (ili liniju iznad nje), prebaciti deo programa u zaseban fajl, zatim proveriti uparenost zagrada i navodnika, proveriti da li je dobra verzija samog Python-a, a preporučuje se i korišćenje nekog naprednijeg editora \cite{proPyDeb}.
-\subsection{Poruka o grešci}
-Kao što smo već mogli da vidimo, kada u programu postoji sintaksna greška prevodilac izbacuje izuzetak i ispisuje poruku o grešci. Svaka poruka o grešci sadrži: \textbf{tip greške}, \textbf{opis greške} i \textbf{traceback}.
+% \subsection{Poruka o grešci}
+Kao što smo već mogli da vidimo, kada u programu postoji sintaksna greška prevodilac izbacuje izuzetak i ispisuje \textbf{poruku o grešci}. Svaka poruka o grešci sadrži: \textbf{tip greške}, \textbf{opis greške} i \textbf{traceback}.
 
 Tip greške jeste tip izuzetka koji je program izbacio. Svi izuzeci su podklase klase \emph{Exception} u hijerarhiji izuzetaka \cite{excDocPyt}.
 
-Nakon tipa greške sledi opis greške koji nam kazuje šta se desilo. Ovaj opis može biti jako značajan i jasan, dok ponekad ne sadrži nikakvu korisnu informaciju. U gornjem primeru tip greške je \emph{SyntaxError}, a opis je \emph{invalid syntax}.
+Nakon tipa greške sledi opis greške koji nam kazuje šta se desilo. Ovaj opis može biti jako značajan i jasan, dok ponekad ne sadrži nikakvu korisnu informaciju. U primeru \ref{dva} tip greške je \emph{SyntaxError}, a opis je \emph{invalid syntax}.
 
 Traceback sadrži informaciju o tome gde je program pukao. Ispisuju se segmenti programa koji sadrže grešku, broj linije gde je program pukao i niz funkcija koje su pozvane da bi program stigao do linije sa greškom.
-\subsection{Hvatanje izuzetaka}
-Neki izuzeci se ne mogu izbeći. Na primer, neminovno je da će nam biti izbačen \emph{FileNotFoundError} ako učitavamo neku datoteku i unesemo loše putanju ili ta datoteka ne postoji. Na ovakve greške najbolje je reagovati hvatanjem izuzetaka unutar programa. To možemo da postignemo sa \textbf{try} i \textbf{except} blokom. Sa try pokušamo da pročitamo datoteku, a ako dođe do izuzetka, except blok će "uhvatiti" taj izuzetak i na tom mestu reagovati, najčešće ispisom odgovarajuće poruke. Ako pritom koristimo neke resurse, možemo dodati finally deo gde ćemo ih korektno osloboditi.
+% \subsection{Hvatanje izuzetaka}
+Neki izuzeci se ne mogu izbeći. Na primer, neminovno je da će nam biti izbačen \emph{FileNotFoundError} ako učitavamo neku datoteku i unesemo loše putanju ili ta datoteka ne postoji. Na ovakve greške najbolje je reagovati \textbf{hvatanjem izuzetaka} unutar programa. To možemo da postignemo sa \textbf{try} i \textbf{except} blokom. Sa try pokušamo da pročitamo datoteku, a ako dođe do izuzetka, except blok će „uhvatiti“ taj izuzetak i na tom mestu reagovati, najčešće ispisom odgovarajuće poruke. Ako pritom koristimo neke resurse, možemo dodati finally deo gde ćemo ih korektno osloboditi.
 
 Ono što treba izbegavati kod hvatanja izuzetaka jeste da u except bloku stavimo pass naredbu kojom nastavljamo dalje izvršavanje programa kao da do izuzetka nije ni došlo\cite{proPyDeb}.
-\section{Semantičke greške u Python-u}	
-Kada se program prevede i ne izbacuje izuzetak, ali mi ne dobijamo željeni rezultat, kažemo da smo napravili semantičku grešku. Takve greške je obično teže debagovati, jer nemamo nikakvu informaciju od prevodioca da je do greške došlo. Jedina informacija koju imamo jeste pogrešan rezultat.
-\begin{lstlisting}[language = python, caption = {Funkcija koja računa sumu prvih n brojeva}]
+% \section{Semantičke greške u Python-u}	
+Kada se program prevede i ne izbacuje izuzetak, ali mi ne dobijamo željeni rezultat, kažemo da smo napravili \textbf{semantičku grešku}. Takve greške je obično teže debagovati, jer nemamo nikakvu informaciju od prevodioca da je do greške došlo. Jedina informacija koju imamo jeste pogrešan rezultat.
+\begin{lstlisting}[language = python, caption = {Funkcija koja računa sumu prvih n brojeva}, label=tri]
 def suma(n):
     k = 0
     for i in range(n+1):
@@ -138,8 +137,7 @@ def suma(n):
 
 print(suma(3)) # 6
 \end{lstlisting}
-
-U prethodnom primeru, program računa sumu prvih n brojeva. Neke od semantičkih grešaka koje su mogle da se dese su da range ide do n, umesto do n+1, da je umesto operatora += stavljeno samo =, zatim pogrešna inicijalizacija početne vrednosti za k, inicijalizacija unutar petlje umesto pre petlje itd \cite{proPyDeb}.
+U primeru \ref{tri}, program računa sumu prvih n brojeva. Neke od semantičkih grešaka koje su mogle da se dese su da range ide do n, umesto do n+1, da je umesto operatora += stavljeno samo =, zatim pogrešna inicijalizacija početne vrednosti za k, inicijalizacija unutar petlje umesto pre petlje itd \cite{proPyDeb}.
 
 Semantičke greške se obično lako debaguju u ovako prostim primerima. U kompleksijim primerima su teško uočljive i potrebne su neke od naprednijih tehnika za njihovo pronalaženje.
 
@@ -210,7 +208,6 @@ Pokretanje debagera iz samog programa možemo izvršiti na samom početku progra
 \begin{lstlisting}[language = python, caption = {Započinjemo debagovanje}]
 import pdb; pdb.set_trace()
 \end{lstlisting}
-
 pdb.set\_trace() postavlja debager za pozivajući stek okvir. Debager je proširiv i zapravo je definisan kao klasa Pdb. Kada se izvrši linija iznad, program se zaustavlja i čeka sledeću naredbu. Prikazuje se pdb prompt. To znaci da je postavljena pauza u interaktivnom debageru i da mozemo uneti komandu.
 Od verzije 3.7 možemo pokrenuti debager funkcijom breakpoints() koja importuje pdb i poziva pdb.set\_trace() \cite{pdbExamples}. Definisanjem promenljive BREAKPOINTS=0 onemogućavamo breakpoints(), čime prekidamo debagovanje \cite{pdbExamples}.
 \subsection{Debagovanje korak po korak}
@@ -227,7 +224,6 @@ diff = sub(40,2)
 my_list_sum = sum(my_list)
 experiment = sum(new_list) / sub(diff,my_list_sum)
 \end{lstlisting}
-
 Kada pokrenemo skript koristeći Python debager komandom \emph{python -m pdb prvi.py} vidimo u konzoli sledeće:
 \begin{lstlisting}[language = bash, caption={Ulazak u Pdb prompt}]
 > prvi.py(1)<module>()
@@ -244,7 +240,6 @@ Komandom n (next) izvršavamo sledeću liniju.
 > prvi.py(2)<module>()
 -> new_list = list(map(lambda x: x*2,my_list))
 \end{lstlisting}
-
 S obzirom da je prva linija sada izvršena, komandom p možemo prikazati vrednost neke
  promenljive.
 \begin{lstlisting}[language = bash, caption={Štampanje promenljive \emph{my\_list}}]
@@ -263,7 +258,6 @@ S obzirom da je prva linija sada izvršena, komandom p možemo prikazati vrednos
 > prvi.py(3)<module>()
 -> def sub(a,b):
 \end{lstlisting}
-
 Ovde zapravo mozemo uočiti razliku izmedju n(next) i s(step) komande. Komanda n izvršava narednu liniju, dok s izvršava narednu liniju, ali ukoliko ona sadrži poziv neke funkcije, onda se vrši skok na prvu liniju te funkcije. Iz prethodnog možemo videti da smo trenutno pauzirani na funkciji sub() i sad prolazimo kroz nju.
 \begin{lstlisting}[language = bash, caption={Izvršavamo prve tri linije u funkciji \emph{sub(40, 2)}}]
 (Pdb) n
@@ -278,7 +272,6 @@ Ovde zapravo mozemo uočiti razliku izmedju n(next) i s(step) komande. Komanda n
 >prvi.py(5)sub->38
 ->return a-b
 \end{lstlisting}
-
 I n i s će prekinuti izvršavanje kada dođemo do kraja trenutne funkcije i štampa se \textendash \textendash Return \textendash\textendash zajedno sa povratnom vrednošću na kraju sledećeg reda nakon \textendash>. Komanda Enter pamti poslednju unetu komadu, a u ovom primeru je to n. Ukoliko unesemo jos 3 puta n zaredom prijaviće nam grešku ZeroDivisionError. Komandom q prekidamo debagovanje i izlazimo iz programa.
 \subsection{Postavljanje tačaka prekida}
 Tačke prekida(eng. breakpoints) mogu nam uštedeti puno vremena. Postavljamo ih tamo gde želimo da istražujemo. U naš prethodni primer dodajemo:
@@ -399,7 +392,7 @@ PyCharm nam omogućava da posmatramo promenljive kroz izvršavanje našeg progra
 \end{figure}
 Jedna od opcija koju nam pruža PyCharm jeste da klikom na tačku prekida odmah u editoru dobijemo informacije o našim promenljivama i objektima, u vidu komentara. Ova opcija je podrazumevana i može se promeniti u Debug Tool window-u\cite{pyCharm}.
 \subsection{Evaluacija izraza}
-Poslednja opcija koja se nalazi na Stepping Toolbar-u (slika \ref{2}) je opcija za evaluaciju izraza. Ova opcija nam omogućava da izračunamo vrednost neke promenljive koja nam je trenutno u opsegu ili nekog izraza\cite{pyCharm}. Pitanje koje se postavlja je zašto bi ovo koristili ako isto možemo dobiti korišćenjem prethodno pomenutih posmatranja. Možemo, ali evaluacijom možemo uraditi i nešto što posmatranje ne može, a to je postavljanje vrednosti nekoj promenljivoj\cite{pyCharm}. Ovo je veoma korisno, jer mozemo testirati naš kod za neke kritične vrednosti tako što ćemo na "vestacki"\space način dodeljivati vrednosti promenljivima koje će nas dovesti do tog kritičnog stanja.
+Poslednja opcija koja se nalazi na Stepping Toolbar-u (slika \ref{2}) je opcija za evaluaciju izraza. Ova opcija nam omogućava da izračunamo vrednost neke promenljive koja nam je trenutno u opsegu ili nekog izraza\cite{pyCharm}. Pitanje koje se postavlja je zašto bi ovo koristili ako isto možemo dobiti korišćenjem prethodno pomenutih posmatranja. Možemo, ali evaluacijom možemo uraditi i nešto što posmatranje ne može, a to je postavljanje vrednosti nekoj promenljivoj\cite{pyCharm}. Ovo je veoma korisno, jer mozemo testirati naš kod za neke kritične vrednosti tako što ćemo na „vestacki“\space način dodeljivati vrednosti promenljivima koje će nas dovesti do tog kritičnog stanja.
 
 \begin{figure}[h!]
 \begin{center}
