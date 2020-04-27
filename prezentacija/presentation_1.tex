@@ -213,9 +213,38 @@ Naš program se prevede ali ne dobijamo željeni rezultat takvu grešsku nazivam
     
 \end{frame}
 \section{PyCharm}
-\begin{frame}{Uvod}
+\begin{frame}{Šta je PyCharm}
+PyCharm je integrisano razvojno okruženje koje se koristi za programiranje u jeziku Python. Pruža analizu koda, grafički debager, integraciju sa verzijom kontrolnog sistema(git) i druge pogodnosti.\\
+Bitni pojmovi Pycharm Debugger-a:
+\begin{enumerate}
+    \item Detaljno Debagovanje
+    \item Posmatranja
+    \item Inline Debugger
+    \item Evaluacija izraza
+\end{enumerate}
+\end{frame}
+\subsection{}
+\begin{frame}{Tačke prekida i pokretanje Debugger-a}
+U okruženju PyCharm tačke prekida postavljamo klikom na levu marginu (oznaka tačke prekida je crveni kružić).\\
+Prilikom kompilacija možemo odabrati opciju Debug, nakon čega dobijamo zaseban prozor za Debagovanje (Debug Tool Window)
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale = 0.4]{1}
+\end{center}
+\caption{Postavljanje Tačaka prekida.}
+\label{1}
+\end{figure}
     
 \end{frame}
+
+\begin{frame}{Opcije Debugger-a}
+Sve opcije Debugger-a se nalaze u Debug Tool Window.\\
+\textbf{Inline Debbuger} je opcija koja nam pruža da u vidu komentara u editoru vidimo sve vrednosti promenljivih.\\
+\textbf{Evaluacija izraza} je opcija koja nam omogućava da izračunamo bilo koji izraz sa trenutnim vrednostima promenljivih u kodu, kao i da dodeljujemo vrednosti promenljivim.\\
+\textbf{Posmatranja} su zaseban prozor u kome se nalaze sve promenljive koje su trenutno definisane kao i njihove vrednosti, u Posmatranja mozemo ručno dodati bilo koju promenljivu (čak i one koje su trenutno ne definisane), njihova vrednost će biti \textbf{Null}.\\
+\textbf{Detaljno Debagovanje} prestavlja skup opcija za iteriranje kroz kod korak po korak.
+\end{frame}
+
 \subsection{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
 
 \begin{frame}
