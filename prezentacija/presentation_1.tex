@@ -228,9 +228,98 @@ Korisna je i biblioteka logging, gde su nam, izmedju ostalih, na raspolaganju kl
 % kraj prve sekcije
 
 \section{PDB debager}
-\begin{frame}{Naslov slajda}
-    
+ \begin{frame}{PDB debager}
+\begin{itemize}
+\item Pdb predstavlja interaktivni program za otklanjanje grešaka.
+\item Prati izvršavanje programa korak po korak, pruža pomoć pri rešavanju bagova.
+\item Debagovanje programa pokrećemo:
+\begin{enumerate}
+\item iz komandne linije
+\item iz samog programa
+\end{enumerate}
+\end{itemize}
+\begin{enumerate}
+\item Pokrećemo skript koristeći Pdb komandom {\color{blue}python -m pdb imeprograma.py arg1 arg2}
+\item Umećemo deo koda u program na mesto odakle želimo da započnemo proces debagovanja.
+\\ {\color{blue}import pdb; pdb.set\_trace()}
+\\ {\color{blue}pdb.set\_trace()} postavlja debager za pozivajući stek okvir.
+\end{enumerate}
 \end{frame}
+\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
+\frametitle{Primer}
+\begin{exampleblock}{Primer 1.py}
+  \begin{lstlisting}[language = python]
+my_list = [1,9,13,3,12]
+new_list = list(map(lambda x: x*2,my_list))
+
+def sub(a,b):
+  print(a)
+  return a-b
+  
+diff = sub(40,2)
+my_list_sum = sum(my_list)
+experiment = sum(new_list) / sub(diff,my_list_sum)
+   \end{lstlisting}
+   \end{exampleblock}
+
+\end{frame}
+\subsection{Pokretanje iz komandne linije}
+\begin{frame}[fragile]
+\begin{lstlisting}[language = bash]
+> prvi.py(1)<module>()
+-> my_list = [1,9,13,3,12]
+(Pdb) n
+> prvi.py(2)<module>()
+-> new_list = list(map(lambda x: x*2,my_list))
+(Pdb) n
+> prvi.py(3)<module>()
+-> def sub(a,b):
+(Pdb) n
+> prvi.py(6)<module>()
+-> diff = sub(40,2)
+(Pdb) s
+--Call--
+> prvi.py(3)<module>()
+-> def sub(a,b):
+(Pdb) n
+> prvi.py(4)sub()
+->print(a)
+(Pdb) n
+40
+>prvi.py(5)sub()
+->return a-b
+(Pdb) n
+--Return--
+>prvi.py(5)sub->38
+->return a-b
+\end{lstlisting}
+\end{frame}
+\subsection{Pokretanje iz programa}
+\begin{frame}[fragile]
+Tamo gde želimo da istražujemo postavljamo tačke prekida.
+\begin{lstlisting}[language = python]
+import pdb; pdb.set_trace()
+experiment = sum(new_list) / sub(diff,my_list_sum)
+\end{lstlisting}
+Ako sada program pokrenemo sa {\color{blue}python 1.py}, prva linija za izvršavanje korišćenjem debagera biće {\color{blue}experiment = sum(new\_list) / sub(diff,my\_list\_sum)}. U slučaju da dodamo i ove argumente {\color{blue}\textendash m  pdb} izvršavanje kreće od prve linije.
+\begin{lstlisting}[language = bash]
+>prvi.py(1)<module>()
+->my_list = [1,9,13,3,12]
+(Pdb)c
+40
+>prvi.py(9)<module>()
+->experiment = sum(new_list) / sub(diff,my_list_sum)
+(Pdb) n
+38
+ZeroDivisionError: division by zero
+\end{lstlisting}
+Tačke prekida možemo postavljati i komandom b (break).  
+\begin{lstlisting}[language = bash]
+(Pdb) b 9 
+\end{lstlisting}
+
+\end{frame}   
+
 
 % kraj druge sekcije
 \section{PyCharm}
