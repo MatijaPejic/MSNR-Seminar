@@ -163,9 +163,9 @@ Matematički fakultet, Beograd \\ % Your institution for the title page
 \end{itemize}
 \end{frame}
 
-\subsection{Izuzeci u Pyyhon-u}
+\subsection{Izuzeci u Pyhon-u}
 \begin{frame}[fragile]
-\frametitle{Izuzeci u Pyyhon-u}
+\frametitle{Izuzeci u Pyhon-u}
 \begin{exampleblock}{}
 \begin{lstlisting}[language = python]
 def student(name):
@@ -181,7 +181,7 @@ student('Pera')
 \end{lstlisting}
 \end{exampleblock}
 \begin{exampleblock}{}
-\begin{lstlisting}[language = shell]
+\begin{lstlisting}[language = bash]
   File "primer.py", line 5
     'Laza': '252/2015'
           ^
@@ -190,11 +190,11 @@ SyntaxError: invalid syntax
 \end{exampleblock}
 \end{frame}
 \begin{frame}
-\frametitle{Izuzeci u Pyyhon-u}
+\frametitle{Izuzeci u Pyhon-u}
 Kada u programu postoji sintaksna greška prevodilac izbacuje izuzetak i ispisuje \textbf{poruku o grešci}. Ona sadrži:
 \begin{enumerate}
-    \item Poruka o grešci
     \item Tip greške
+    \item Opis greške
     \item Traceback
 \end{enumerate}
 Neki izuzeci se ne mogu izbeći, takve izuzetke hvatamo korišćenjem \textbf{try} i \textbf{except} blok. \\
@@ -208,11 +208,17 @@ Naš program se prevede ali ne dobijamo željeni rezultat takvu grešsku nazivam
 \begin{frame}{Debagovanje print metodom}
     
 \end{frame}
+
+% kraj prve sekcije
+
 \section{PDB debager}
-\begin{frame}{Uvod}
+\begin{frame}{Naslov slajda}
     
 \end{frame}
+
+% kraj druge sekcije
 \section{PyCharm}
+\subsection{Šta je PyCharm}
 \begin{frame}{Šta je PyCharm}
 PyCharm je integrisano razvojno okruženje koje se koristi za programiranje u jeziku Python. Pruža analizu koda, grafički debager, integraciju sa verzijom kontrolnog sistema(git) i druge pogodnosti.\\
 Bitni pojmovi Pycharm Debugger-a:
@@ -223,7 +229,7 @@ Bitni pojmovi Pycharm Debugger-a:
     \item Evaluacija izraza
 \end{enumerate}
 \end{frame}
-\subsection{}
+\subsection{Tačke prekida i pokretanje Debugger-a}
 \begin{frame}{Tačke prekida i pokretanje Debugger-a}
 U okruženju PyCharm tačke prekida postavljamo klikom na levu marginu (oznaka tačke prekida je crveni kružić).\\
 Prilikom kompilacija možemo odabrati opciju Debug, nakon čega dobijamo zaseban prozor za Debagovanje (Debug Tool Window)
@@ -236,7 +242,7 @@ Prilikom kompilacija možemo odabrati opciju Debug, nakon čega dobijamo zaseban
 \end{figure}
     
 \end{frame}
-
+\subsection{Opcije Debugger-a}
 \begin{frame}{Opcije Debugger-a}
 Sve opcije Debugger-a se nalaze u Debug Tool Window.\\
 \textbf{Inline Debbuger} je opcija koja nam pruža da u vidu komentara u editoru vidimo sve vrednosti promenljivih.\\
@@ -245,7 +251,9 @@ Sve opcije Debugger-a se nalaze u Debug Tool Window.\\
 \textbf{Detaljno Debagovanje} prestavlja skup opcija za iteriranje kroz kod korak po korak.
 \end{frame}
 
-\subsection{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
+%% Odavde na dalje izbrisati
+
+\section{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
 
 \begin{frame}
 \frametitle{Paragraphs of Text}
