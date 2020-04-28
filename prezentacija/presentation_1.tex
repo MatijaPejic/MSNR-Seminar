@@ -158,7 +158,7 @@ Matematički fakultet, Beograd \\ % Your institution for the title page
 \begin{frame}{Uvod}
 \begin{itemize}
     \item Greške pri programiranju se svima dešavaju
-    \item Debagovanje je proces nalaženje i otklanjanje grešaka u programu.
+    \item Debagovanje je proces nalaženja i otklanjanja grešaka u programu.
     \item Ono podrazumeva sledeće: 
     \begin{enumerate}
         \item Znamo kako program treba da radi
@@ -169,9 +169,9 @@ Matematički fakultet, Beograd \\ % Your institution for the title page
 \end{itemize}
 \end{frame}
 
-\subsection{Izuzeci u Pyhon-u}
+\subsection{Debagovanje sintaksnih grešaka}
 \begin{frame}[fragile]
-\frametitle{Izuzeci u Pyhon-u}
+\frametitle{Debagovanje sintaksnih grešaka}
 \begin{exampleblock}{}
 \begin{lstlisting}[language = python]
 def student(name):
@@ -196,15 +196,17 @@ SyntaxError: invalid syntax
 \end{exampleblock}
 \end{frame}
 \begin{frame}
-\frametitle{Izuzeci u Pyhon-u}
-Kada u programu postoji sintaksna greška prevodilac izbacuje izuzetak i ispisuje \textbf{poruku o grešci}. Ona sadrži:
+\frametitle{Debagovanje sintaksnih grešaka}
+\begin{itemize}
+\item Kada u programu postoji sintaksna greška prevodilac izbacuje izuzetak i ispisuje \textbf{poruku o grešci}. Ona sadrži:
 \begin{enumerate}
     \item Tip greške
     \item Opis greške
     \item Traceback
 \end{enumerate}
-Neki izuzeci se ne mogu izbeći, takve izuzetke hvatamo korišćenjem \textbf{try} i \textbf{except} blok. \\
-Naš program se prevede ali ne dobijamo željeni rezultat takvu grešsku nazivamo \textbf{Semantička greška}. 
+\item Neki izuzeci se ne mogu izbeći, takve izuzetke hvatamo korišćenjem \textbf{try} i \textbf{except} blok
+\item Naš program se prevede ali ne dobijamo željeni rezultat, takvu grešku nazivamo \textbf{Semantička greška}
+\end{itemize}
 \end{frame}
 \subsection{Debagovanje naučnom metodom}
 \begin{frame}{Debagovanje naučnom metodom}
