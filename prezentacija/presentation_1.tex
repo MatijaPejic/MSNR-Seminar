@@ -255,7 +255,7 @@ Korisna je i biblioteka logging, gde su nam, između ostalih, na raspolaganju kl
 \end{frame}
 \begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
 \frametitle{Primer}
-\begin{exampleblock}{Primer 1.py}
+\begin{exampleblock}{Primer prvi.py}
   \begin{lstlisting}[language = python]
 my_list = [1,9,13,3,12]
 new_list = list(map(lambda x: x*2,my_list))
@@ -309,7 +309,7 @@ Tamo gde želimo da istražujemo postavljamo tačke prekida.
 import pdb; pdb.set_trace()
 experiment = sum(new_list) / sub(diff,my_list_sum)
 \end{lstlisting}
-Ako sada program pokrenemo sa {\color{blue}python 1.py}, prva linija za izvršavanje korišćenjem debagera biće \\{\color{blue}experiment = sum(new\_list) / sub(diff,my\_list\_sum)} \\ U slučaju da dodamo i argumente {\color{blue}\textendash m  pdb}, izvršavanje kreće od prve linije.
+Ako sada program pokrenemo sa {\color{blue}python prvi.py}, prva linija za izvršavanje korišćenjem debagera biće \\{\color{blue}experiment = sum(new\_list) / sub(diff,my\_list\_sum)} \\ U slučaju da dodamo i argumente {\color{blue}\textendash m  pdb}, izvršavanje kreće od prve linije.
 \begin{lstlisting}[language = bash]
 >prvi.py(1)<module>()
 ->my_list = [1,9,13,3,12]
@@ -360,7 +360,7 @@ Prilikom kompilacija možemo odabrati opciju Debug, nakon čega dobijamo zaseban
 Sve opcije Debugger-a se nalaze u Debug Tool Window-u.\\
 \textbf{Inline Debbuger} je opcija koja nam pruža da u vidu komentara u editoru vidimo sve vrednosti promenljivih.\\
 \textbf{Evaluacija izraza} je opcija koja nam omogućava da izračunamo bilo koji izraz sa trenutnim vrednostima promenljivih u kodu, kao i da dodeljujemo vrednosti promenljivama.\\
-\textbf{Posmatranja} su zaseban prozor u kome se nalaze sve promenljive koje su trenutno definisane, kao i njihove vrednosti. U posmatranja mozemo ručno dodati bilo koju promenljivu (čak i one koje su trenutno nedefinisane i njihova vrednost će biti \textbf{null}).\\
+\textbf{Posmatranja} su zaseban prozor u kome se nalaze sve promenljive koje su trenutno definisane, kao i njihove vrednosti.
 \textbf{Detaljno debagovanje} predstavlja skup opcija za iteriranje kroz kod korak po korak.
 \end{frame}
 
