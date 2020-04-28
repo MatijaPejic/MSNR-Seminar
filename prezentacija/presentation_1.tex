@@ -218,19 +218,31 @@ Predstavlja formalan pristup pronalaženju problema koji je zasnovan na sledeći
     \item Testiraj
     \item Zaključi
 \end{enumerate}
-Da bi efikasno primenili ovaj način debagovanja, potrebno je da dobro vladamo tehnikama reprodukcije grešaka, automatizacijom i izolacijom grešaka, kao i da metodu ne primenjujemo za "lake" greške.
+Za efikasnu primenu, neophodno je vladati tehnikama:
+\begin{itemize}
+    \item reprodukcije grešaka
+    \item automatizacijom
+    \item izolacijom grešaka
+\end{itemize}
+%Metodu ne treba primenjujivati za "lake" greške.
 \end{frame}
 \subsection{Debagovanje print metodom}
 \begin{frame}{Debagovanje print metodom}
-Print je jednostavna, ali moćna metoda za debagovanje. Ako je koristimo adekvatno, ona postaje veoma sistematična i korisna. Za lepši ispis složenih tipova podataka možemo koristiti biblioteku pprint. \\
-Korisna je i biblioteka logging, gde su nam, između ostalih, na raspolaganju klase:
-\begin{enumerate}
-    \item Logger
-    \item LogRecord
-    \item Handler
-    \item Filter
-    \item Formatter
-\end{enumerate}  
+\begin{itemize}
+    \item jednostavna, ali moćna metoda
+    \item biblioteke pprint, logging daju fleksibilnost 
+    \item Neke od klasa u logging biblioteci su: \\
+    Logger, LogRecord, Handler, Filter, Formatter
+\end{itemize}
+
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale = 0.8]{logger}
+\end{center}
+\caption{Rad sa log zapisima}
+\label{1}
+\end{figure}
 \end{frame}
 
 % kraj prve sekcije
