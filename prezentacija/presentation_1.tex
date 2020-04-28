@@ -205,7 +205,7 @@ SyntaxError: invalid syntax
     \item Traceback
 \end{enumerate}
 \item Neki izuzeci se ne mogu izbeći, takve izuzetke hvatamo korišćenjem \textbf{try} i \textbf{except} bloka
-\item Naš program se prevede ali ne dobijamo željeni rezultat, takvu grešku nazivamo \textbf{Semantička greška}
+\item Kada se naš program prevede, ali ne dobijamo željeni rezultat, takvu grešku nazivamo \textbf{semantičkom greškom}
 \end{itemize}
 \end{frame}
 \subsection{Naučni pristup debagovanju}
@@ -222,7 +222,7 @@ Da bi efikasno primenili ovaj način debagovanja, potrebno je da dobro vladamo t
 \end{frame}
 \subsection{Debagovanje print metodom}
 \begin{frame}{Debagovanje print metodom}
-Print je jednostavna, ali moćna metoda za debagovanje. Ako je koristimo adekvatno, one postaje jako sistematična i korisna. Za lepši ispis složenih tipova podataka možemo koristiti biblioteku pprint. \\
+Print je jednostavna, ali moćna metoda za debagovanje. Ako je koristimo adekvatno, ona postaje veoma sistematična i korisna. Za lepši ispis složenih tipova podataka možemo koristiti biblioteku pprint. \\
 Korisna je i biblioteka logging, gde su nam, između ostalih, na raspolaganju klase:
 \begin{enumerate}
     \item Logger
@@ -239,7 +239,7 @@ Korisna je i biblioteka logging, gde su nam, između ostalih, na raspolaganju kl
  \begin{frame}{PDB debager}
 \begin{itemize}
 \item Pdb predstavlja interaktivni program za otklanjanje grešaka.
-\item Prati izvršavanje programa korak po korak, pruža pomoć pri rešavanju bagova.
+\item Prati izvršavanje programa korak po korak i pruža pomoć pri rešavanju bagova.
 \item Debagovanje programa pokrećemo:
 \begin{enumerate}
 \item iz komandne linije
@@ -247,7 +247,7 @@ Korisna je i biblioteka logging, gde su nam, između ostalih, na raspolaganju kl
 \end{enumerate}
 \end{itemize}
 \begin{enumerate}
-\item Pokrećemo skript koristeći Pdb komandom {\color{blue}python -m pdb imeprograma.py arg1 arg2}
+\item Pokrećemo skript Pdb komandom  \\ {\color{blue}python -m pdb imeprograma.py arg1 arg2}
 \item Umećemo deo koda u program na mesto odakle želimo da započnemo proces debagovanja.
 \\ {\color{blue}import pdb; pdb.set\_trace()}
 \\ {\color{blue}pdb.set\_trace()} postavlja debager za pozivajući stek okvir.
@@ -309,7 +309,7 @@ Tamo gde želimo da istražujemo postavljamo tačke prekida.
 import pdb; pdb.set_trace()
 experiment = sum(new_list) / sub(diff,my_list_sum)
 \end{lstlisting}
-Ako sada program pokrenemo sa {\color{blue}python 1.py}, prva linija za izvršavanje korišćenjem debagera biće \\{\color{blue}experiment = sum(new\_list) / sub(diff,my\_list\_sum)}. U slučaju da dodamo i ove argumente {\color{blue}\textendash m  pdb} izvršavanje kreće od prve linije.
+Ako sada program pokrenemo sa {\color{blue}python 1.py}, prva linija za izvršavanje korišćenjem debagera biće \\{\color{blue}experiment = sum(new\_list) / sub(diff,my\_list\_sum)} \\ U slučaju da dodamo i argumente {\color{blue}\textendash m  pdb}, izvršavanje kreće od prve linije.
 \begin{lstlisting}[language = bash]
 >prvi.py(1)<module>()
 ->my_list = [1,9,13,3,12]
@@ -336,7 +336,7 @@ Tačke prekida možemo postavljati i komandom b (break).
 PyCharm je integrisano razvojno okruženje koje se koristi za programiranje u jeziku Python. Pruža analizu koda, grafički debager, integraciju sa verzijom kontrolnog sistema(git) i druge pogodnosti.\\
 Bitni pojmovi Pycharm Debugger-a:
 \begin{enumerate}
-    \item Detaljno Debagovanje
+    \item Detaljno debagovanje
     \item Posmatranja
     \item Inline Debugger
     \item Evaluacija izraza
@@ -357,11 +357,11 @@ Prilikom kompilacija možemo odabrati opciju Debug, nakon čega dobijamo zaseban
 \end{frame}
 \subsection{Opcije Debugger-a}
 \begin{frame}{Opcije Debugger-a}
-Sve opcije Debugger-a se nalaze u Debug Tool Window.\\
+Sve opcije Debugger-a se nalaze u Debug Tool Window-u.\\
 \textbf{Inline Debbuger} je opcija koja nam pruža da u vidu komentara u editoru vidimo sve vrednosti promenljivih.\\
-\textbf{Evaluacija izraza} je opcija koja nam omogućava da izračunamo bilo koji izraz sa trenutnim vrednostima promenljivih u kodu, kao i da dodeljujemo vrednosti promenljivim.\\
-\textbf{Posmatranja} su zaseban prozor u kome se nalaze sve promenljive koje su trenutno definisane, kao i njihove vrednosti. U posmatranja mozemo ručno dodati bilo koju promenljivu (čak i one koje su trenutno ne definisane), njihova vrednost će biti \textbf{Null}.\\
-\textbf{Detaljno Debagovanje} prestavlja skup opcija za iteriranje kroz kod korak po korak.
+\textbf{Evaluacija izraza} je opcija koja nam omogućava da izračunamo bilo koji izraz sa trenutnim vrednostima promenljivih u kodu, kao i da dodeljujemo vrednosti promenljivama.\\
+\textbf{Posmatranja} su zaseban prozor u kome se nalaze sve promenljive koje su trenutno definisane, kao i njihove vrednosti. U posmatranja mozemo ručno dodati bilo koju promenljivu (čak i one koje su trenutno nedefinisane i njihova vrednost će biti \textbf{null}).\\
+\textbf{Detaljno debagovanje} predstavlja skup opcija za iteriranje kroz kod korak po korak.
 \end{frame}
 
 %------------------------------------------------
